@@ -3,7 +3,7 @@
 class player
 {
 public:
-	player();
+	player(std::string playerName_);
 	void changeDrivers();
 	void changeConstructor();
 private:

@@ -125,15 +125,19 @@
   <ItemGroup>
     <ClCompile Include="constructor.cpp" />
     <ClCompile Include="driver.cpp" />
-    <ClCompile Include="getSite.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="player.cpp" />
     <ClCompile Include="race.cpp" />
+    <ClCompile Include="raceResult.cpp" />
+    <ClCompile Include="season.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="constructor.h" />
     <ClInclude Include="driver.h" />
-    <ClInclude Include="getSite.h" />
+    <ClInclude Include="player.h" />
     <ClInclude Include="race.h" />
+    <ClInclude Include="raceResult.h" />
+    <ClInclude Include="season.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
