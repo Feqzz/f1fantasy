@@ -12,6 +12,7 @@
 
 .vs/
 vcpkg/
+.idea/
 
 output.txt
 
