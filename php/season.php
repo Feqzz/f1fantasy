@@ -3,12 +3,12 @@
 
 class season
 {
-    function addDriver($driver)
+    public function addDriver($driver)
     {
         array_push($this->drivers, $driver);
     }
 
-    function addConstructor($constructor)
+    public function addConstructor($constructor)
     {
         if(!in_array($constructor, $this->constructors))
         {
@@ -16,7 +16,7 @@ class season
         }
     }
 
-    function addRace($race)
+    public function addRace($race)
     {
         if(!in_array($race, $this->races))
         {

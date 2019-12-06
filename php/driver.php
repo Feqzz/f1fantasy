@@ -2,7 +2,7 @@
 
 class driver
 {
-    function __construct($permanentNumber, $points, $code, $givenName, $familyName,
+    public function __construct($permanentNumber, $points, $code, $givenName, $familyName,
                          $dateOfBirth, $nationality, $driverId, $constructor)
     {
         $this->permanentNumber = $permanentNumber;
@@ -16,32 +16,32 @@ class driver
         $this->constructor = $constructor;
     }
 
-    function setPrice($price)
+    public function setPrice($price)
     {
         $this->price = $price;
     }
 
-    function changeConstructor($newConstructor)
+    public function changeConstructor($newConstructor)
     {
         $this->constructor = $newConstructor;
     }
 
-    function increasePoints($newPoints)
+    public function increasePoints($newPoints)
     {
         $this->points .= $newPoints;
     }
 
-    function getDriverId()
+    public function getDriverId()
     {
         return $this->driverId;
     }
 
-    function getFullName()
+    public function getFullName()
     {
         return ($this->givenName . " " . $this->familyName);
     }
 
-    function getConstructor()
+    public function getConstructor()
     {
         return $this->constructor;
     }
