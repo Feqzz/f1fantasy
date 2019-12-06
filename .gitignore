@@ -10,10 +10,11 @@
 *.userosscache
 *.sln.docstates
 
-.vs/
+
 vcpkg/
 .idea/
 
+f1fantasy.sln
 output.txt
 
 # User-specific files (MonoDevelop/Xamarin Studio)
