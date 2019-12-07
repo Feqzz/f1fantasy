@@ -16,7 +16,11 @@ class raceResult
 
     public function printRaceResult()
     {
-        echo $this->driver->getFullName() . PHP_EOL;
+        if ($this->position < 10)
+        {
+            print "0";
+        }
+        print $this->position . " | " . $this->driver->getFullName() . " | " . $this->constructor->getName() . " | " . $this->points . " | " . $this->fastestLapTime . "<br>\n";
     }
 
     private $driver;
