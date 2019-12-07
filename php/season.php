@@ -10,9 +10,9 @@ class season
         $this->numberOfRaces = $numberOfRaces;
     }
 
-    function getRaceData()
+    function getRaceData($raceNumber_)
     {
-        $raceNumber = 15; //Will fix this later. Now it will only be an example.
+        $raceNumber = $raceNumber_; //Will fix this later. Now it will only be an example.
         //Downloads the website to file output.xml
         $website = "https://ergast.com/api/f1/" . $this->year . "/" . $raceNumber . "/results";
         $xml = file_get_contents($website);
@@ -62,9 +62,17 @@ class season
             $constructorId = (string)$Result->Constructor->attributes()->{'constructorId'};
             $constructorName = (string)$Result->Constructor->Name;
             $constructorNationality = (string)$Result->Constructor->Nationality;
-            $fastestLapRank = (int)$Result->FastestLap->attributes()->{'rank'};
-            $fastestLapTime = (string)$Result->FastestLap->Time;
-
+            $laps = (int)$Result->Laps;
+            if ($laps > 20)
+            {
+                $fastestLapRank = (int)$Result->FastestLap->attributes()->{'rank'};
+                $fastestLapTime = (string)$Result->FastestLap->Time;
+            }
+            else
+            {
+                $fastestLapRank = -1;
+                $fastestLapTime = "Retired from race too early";
+            }
             $constructorAlreadyExists = false;
             $driverAlreadyExists = false;
             $driverConstructor = null;
@@ -76,6 +84,7 @@ class season
                 {
                     $constructorAlreadyExists = true;
                     $driverConstructor = $this->constructors[$i];
+                    break;
                 }
             }
 
@@ -98,6 +107,7 @@ class season
                     }
                     $this->drivers[$i]->increasePoints($points);
                     $driverAlreadyExists = true;
+                    break;
                 }
             }
 
@@ -125,10 +135,21 @@ class season
         for ($i = 0; $i < count($this->races); $i++)
         {
             $r = $this->races[$i]->getRaceResults();
+            print $this->races[$i]->getRaceName . "<br>\n";
             for ($j = 0; $j < count($r); $j++)
             {
                 $r[$j]->printRaceResult();
+
             }
+            echo "<br>\n";
+        }
+    }
+
+    public function simulateSeason()
+    {
+        for ($i = 1; $i <= $this->numberOfRaces; $i++)
+        {
+            $this->getRaceData($i);
         }
     }
 
@@ -152,6 +173,12 @@ class season
             array_push($this->races, $race);
         }
     }
+
+    public function getDrivers()
+    {
+        return $this->drivers;
+    }
+
     private $numberOfRaces;
     private $year;
     private $drivers = array();
