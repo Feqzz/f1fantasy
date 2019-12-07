@@ -46,6 +46,11 @@ class race
         return $this->raceResults;
     }
 
+    public function getRaceName()
+    {
+        return $this->raceName;
+    }
+
 
     private $season;
     private $round;
