@@ -1,6 +1,6 @@
 <?php
 
-require_once("driver.php");
+require_once("raceResult.php");
 
 class race
 {
@@ -39,6 +39,11 @@ class race
     public function getRound()
     {
         return $this->round;
+    }
+
+    public function getRaceResults()
+    {
+        return $this->raceResults;
     }
 
 
