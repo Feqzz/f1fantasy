@@ -30,7 +30,7 @@ class driver
 
     public function increasePoints($newPoints)
     {
-        $this->points .= $newPoints;
+        $this->points += $newPoints;
     }
 
     public function getDriverId()
@@ -46,6 +46,11 @@ class driver
     public function getConstructor()
     {
         return $this->constructor;
+    }
+
+    public function getPoints()
+    {
+        return $this->points;
     }
 
     private $permanentNumber;
