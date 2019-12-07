@@ -14,6 +14,11 @@ class constructor
     {
         return $this->constructorId;
     }
+
+    public function getName()
+    {
+        return $this->name;
+    }
     private $constructorId;
     private $name;
     private $nationality;
