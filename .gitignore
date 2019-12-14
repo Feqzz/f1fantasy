@@ -17,6 +17,7 @@ vcpkg/
 f1fantasy.sln
 output.txt
 output.xml
+dbh.php
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
