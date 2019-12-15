@@ -73,7 +73,6 @@ $race_results_table_query =
         )
     ";
 
-
 $constructor_table_query =
     "
         CREATE TABLE IF NOT EXISTS constructors (
@@ -92,12 +91,5 @@ mysqli_query($link, $constructor_table_query);
 mysqli_query($link, $drivers_table_query);
 mysqli_query($link, $races_table_query);
 mysqli_query($link, $race_results_table_query);
-
-
-if (!$link->query($race_results_table_query))
-{
-    echo $link->error;
-}
-
 
 $link->close();
