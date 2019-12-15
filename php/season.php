@@ -4,17 +4,35 @@ require_once("race.php");
 
 class season
 {
-    public function __construct($year, $numberOfRaces)
+    public function __construct($year, $number_of_races)
     {
         $this->year = $year;
-        $this->numberOfRaces = $numberOfRaces;
+        $this->number_of_races = $number_of_races;
+
+        require_once("dbh.php");
+
+        $link = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+        if ($link->connect_error)
+        {
+            die("Connection failed " . $link->connect_error);
+        }
+
+        $query =
+            "
+                INSERT IGNORE INTO season(number_of_races, year)
+                VALUES ('$this->number_of_races', '$this->year')
+            ";
+
+        mysqli_query($link, $query);
+
+        $link->close();
     }
 
-    function getRaceData($raceNumber_)
+    function get_race_data($race_number_)
     {
-        $raceNumber = $raceNumber_; //Will fix this later. Now it will only be an example.
+        $race_number = $race_number_; //Will fix this later. Now it will only be an example.
         //Downloads the website to file output.xml
-        $website = "https://ergast.com/api/f1/" . $this->year . "/" . $raceNumber . "/results";
+        $website = "https://ergast.com/api/f1/" . $this->year . "/" . $race_number . "/results";
         $xml = file_get_contents($website);
         file_put_contents("output.xml", $xml);
 
@@ -24,15 +42,15 @@ class season
 
         //Getting race information and making a race object.
 
-        $season = (string)$MRData->RaceTable->attributes()->{'season'};
+        $season = (int)$MRData->RaceTable->attributes()->{'season'};
         $round = (int)$MRData->RaceTable->attributes()->{'round'};
-        $raceName = (string)$MRData->RaceTable->Race->RaceName;
+        $race_name = (string)$MRData->RaceTable->Race->RaceName;
         $circuitId = (string)$MRData->RaceTable->Race->Circuit->attributes()->{'circuitId'};
         $circuitName = (string)$MRData->RaceTable->Race->Circuit->CircuitName;
         $country = (string)$MRData->RaceTable->Race->Circuit->Location->Country;
         $date = (string)$MRData->RaceTable->Race->Date;
 
-        $race = new race($season,$round,$raceName,$circuitId, $circuitName, $country, $date);
+        $race = new race($season,$round,$race_name,$circuitId, $circuitName, $country, $date);
 
         for ($i = 0; $i < count($this->races); $i++)
         {
@@ -80,7 +98,7 @@ class season
 
             for ($i = 0; $i < count($this->constructors); $i++)
             {
-                if ($this->constructors[$i]->getConstructorId() == $constructorId)
+                if ($this->constructors[$i]->get_constructor_id() == $constructorId)
                 {
                     $constructorAlreadyExists = true;
                     $driverConstructor = $this->constructors[$i];
@@ -90,7 +108,7 @@ class season
 
             if (!$constructorAlreadyExists)
             {
-                $driverConstructor = new constructor($constructorId, $constructorName, $constructorNationality);
+                $driverConstructor = new constructor($constructorId, $constructorName, $constructorNationality, $season);
                 array_push($this->constructors, $driverConstructor);
             }
 
@@ -98,7 +116,7 @@ class season
 
             for ($i = 0; $i < count($this->drivers); $i++)
             {
-                if ($this->drivers[$i]->getDriverId() == $driverId)
+                if ($this->drivers[$i]->get_driver_id() == $driverId)
                 {
                     $currentDriver = $this->drivers[$i];
                     if ($this->drivers[$i]->getConstructor() != $driverConstructor)
@@ -113,13 +131,13 @@ class season
 
             if(!$driverAlreadyExists)
             {
-                $currentDriver = new driver($permanentNumber, $points, $code, $givenName, $familyName, $dateOfBirth, $nationality, $driverId, $driverConstructor);
+                $currentDriver = new driver($permanentNumber, $points, $code, $givenName, $familyName, $dateOfBirth, $nationality, $driverId, $driverConstructor, $season);
                 array_push($this->drivers, $currentDriver);
             }
 
             $race->addDriver($currentDriver);
 
-            $raceResult = new raceResult($currentDriver, $driverConstructor, $position, $points, $fastestLapRank, $fastestLapTime);
+            $raceResult = new raceResult($currentDriver, $driverConstructor, $position, $points, $fastestLapRank, $fastestLapTime, $race->get_race_id());
 
             $race->addRaceResult($raceResult);
 
@@ -130,7 +148,7 @@ class season
         }
     }
 
-    public function printAllRaceResults()
+    public function print_all_race_results()
     {
         for ($i = 0; $i < count($this->races); $i++)
         {
@@ -145,20 +163,20 @@ class season
         }
     }
 
-    public function simulateSeason()
+    public function simulate_season()
     {
-        for ($i = 1; $i <= $this->numberOfRaces; $i++)
+        for ($i = 2; $i <= $this->number_of_races; $i++)
         {
-            $this->getRaceData($i);
+            $this->get_race_data($i);
         }
     }
 
-    public function addDriver($driver)
+    public function add_driver($driver)
     {
         array_push($this->drivers, $driver);
     }
 
-    public function addConstructor($constructor)
+    public function add_constructor($constructor)
     {
         if(!in_array($constructor, $this->constructors))
         {
@@ -166,7 +184,7 @@ class season
         }
     }
 
-    public function addRace($race)
+    public function add_race($race)
     {
         if(!in_array($race, $this->races))
         {
@@ -174,12 +192,12 @@ class season
         }
     }
 
-    public function getDrivers()
+    public function get_drivers()
     {
         return $this->drivers;
     }
 
-    private $numberOfRaces;
+    private $number_of_races;
     private $year;
     private $drivers = array();
     private $constructors = array();

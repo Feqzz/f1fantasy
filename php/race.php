@@ -13,6 +13,27 @@ class race
         $this->circuitName = $circuitName;
         $this->country = $country;
         $this->date = $date;
+        $this->race_id = $season . "_" . $circuitId;
+
+        require_once("dbh.php");
+
+        $link = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+        if ($link->connect_error)
+        {
+            die("Connection failed " . $link->connect_error);
+        }
+
+        $query =
+            "
+                INSERT IGNORE INTO races (race_id, round, race_name, circuit_id,
+                                          circuit_name, country, date, season)
+                VALUES ('$this->race_id', '$this->round','$this->raceName',
+                        '$this->circuitId', '$this->circuitName',
+                        '$this->country', '$this->date', '$this->season')
+            ";
+
+        mysqli_query($link, $query);
+        $link->close();
     }
 
     public function addDriver($driver)
@@ -29,6 +50,30 @@ class race
     {
         $this->fastestLapTime = $lapTime;
         $this->fastestLapDriver = $driver;
+
+        $driver_id = $this->fastestLapDriver->get_driver_id();
+
+        require_once("dbh.php");
+
+        $link = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+        if ($link->connect_error)
+        {
+            die("Connection failed " . $link->connect_error);
+        }
+
+        $query =
+            "
+                UPDATE races
+                SET 
+                    fastest_lap_driver_id = '$driver_id',
+                    fastest_lap_time = '$lapTime'
+                WHERE
+                    race_id = '$this->race_id';
+            ";
+
+        mysqli_query($link, $query);
+
+        $link->close();
     }
 
     public function addRaceResult($raceResult)
@@ -51,7 +96,12 @@ class race
         return $this->raceName;
     }
 
+    public function get_race_id()
+    {
+        return $this->race_id;
+    }
 
+    private $race_id;
     private $season;
     private $round;
     private $raceName;

@@ -1,20 +1,22 @@
 <?php
 
 require_once("player.php");
+require_once("mysql_tables.php");
 
-$playerDriver = $_GET["Driver"];
+//$playerDriver = $_GET["Driver"];
+$playerDriver = "vettel";
 $playerDriverExists = false;
 
-$season = new season(2019,21);
+$season = new season(2019,2);
 
-$season->getRaceData(1);
+$season->get_race_data(1);
 
-for ($i = 0; $i < count($season->getDrivers()); $i++)
+for ($i = 0; $i < count($season->get_drivers()); $i++)
 {
-    if ($season->getDrivers()[$i]->getDriverId() == $playerDriver)
+    if ($season->get_drivers()[$i]->get_driver_id() == $playerDriver)
     {
         $playerDriverExists = true;
-        $playerDriver = $season->getDrivers()[$i];
+        $playerDriver = $season->get_drivers()[$i];
         break;
     }
 }
@@ -26,7 +28,7 @@ if (!$playerDriverExists)
 }
 $player = new player($playerDriver);
 
-$season->simulateSeason();
+$season->simulate_season();
 $player->updatePoints();
 
 echo $player->getPoints();

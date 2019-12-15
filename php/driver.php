@@ -5,7 +5,7 @@ require_once("constructor.php");
 class driver
 {
     public function __construct($permanentNumber, $points, $code, $givenName, $familyName,
-                         $dateOfBirth, $nationality, $driverId, $constructor)
+                         $dateOfBirth, $nationality, $driverId, $constructor, $season)
     {
         $this->permanentNumber = $permanentNumber;
         $this->points = $points;
@@ -16,6 +16,30 @@ class driver
         $this->nationality = $nationality;
         $this->driverId = $driverId;
         $this->constructor = $constructor;
+        $this->season = $season;
+
+        $constructor_id = $this->constructor->get_constructor_id();
+
+        require_once("dbh.php");
+
+        $link = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+        if ($link->connect_error)
+        {
+            die("Connection failed " . $link->connect_error);
+        }
+
+        $query =
+            "
+                INSERT INTO drivers (permanent_number, points, code, price, given_name, 
+                family_name, date_of_birth, nationality, driver_id, constructor_id, season)
+                VALUES ('$this->permanentNumber', '$this->points', '$this->code',
+                 '$this->price', '$this->givenName', '$this->familyName',
+                '$this->dateOfBirth', '$this->nationality', '$this->driverId', '$constructor_id', '$this->season')
+            ";
+
+        mysqli_query($link, $query);
+
+        $link->close();
     }
 
     public function setPrice($price)
@@ -31,9 +55,30 @@ class driver
     public function increasePoints($newPoints)
     {
         $this->points += $newPoints;
+
+        require_once("dbh.php");
+
+        $link = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+        if ($link->connect_error)
+        {
+            die("Connection failed " . $link->connect_error);
+        }
+
+        $query =
+            "
+                UPDATE drivers
+                SET 
+                    points = '$this->points'
+                WHERE
+                    driver_id = '$this->driverId';
+            ";
+
+        mysqli_query($link, $query);
+
+        $link->close();
     }
 
-    public function getDriverId()
+    public function get_driver_id()
     {
         return $this->driverId;
     }
@@ -63,5 +108,6 @@ class driver
     private $nationality;
     private $driverId;
     private $constructor;
+    private $season;
 }
 ?>
