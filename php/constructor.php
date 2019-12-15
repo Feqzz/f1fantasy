@@ -2,9 +2,9 @@
 
 class constructor
 {
-    public function __construct($constructorId, $name, $nationality, $season)
+    public function __construct($constructor_id, $name, $nationality, $season)
     {
-        $this->constructor_id = $constructorId;
+        $this->constructor_id = $constructor_id;
         $this->name = $name;
         $this->nationality = $nationality;
         $this->season = $season;
@@ -25,7 +25,6 @@ class constructor
 
         mysqli_query($link, $query);
 
-
         $link->close();
     }
 
@@ -34,7 +33,7 @@ class constructor
         return $this->constructor_id;
     }
 
-    public function getName()
+    public function get_name()
     {
         return $this->name;
     }
