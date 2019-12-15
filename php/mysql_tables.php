@@ -7,6 +7,16 @@ if ($link->connect_error)
     die("Connection failed " . $link->connect_error);
 }
 
+$user_table_query =
+    "
+        CREATE TABLE IF NOT EXISTS users (
+        id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        username VARCHAR(50) NOT NULL UNIQUE,
+        password VARCHAR(255) NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    ";
+
 $season_table_query =
     "
         CREATE TABLE IF NOT EXISTS season (
@@ -91,5 +101,6 @@ mysqli_query($link, $constructor_table_query);
 mysqli_query($link, $drivers_table_query);
 mysqli_query($link, $races_table_query);
 mysqli_query($link, $race_results_table_query);
+mysqli_query($link, $user_table_query);
 
 $link->close();
