@@ -10,7 +10,6 @@ class season
         $this->number_of_races = $number_of_races;
 
         require_once("dbh.php");
-
         $link = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
         if ($link->connect_error)
         {
@@ -24,8 +23,7 @@ class season
             ";
 
         mysqli_query($link, $query);
-
-        $link->close();
+        mysqli_close($link);
     }
 
     function get_race_data($race_number_)
@@ -119,11 +117,11 @@ class season
                 if ($this->drivers[$i]->get_driver_id() == $driverId)
                 {
                     $currentDriver = $this->drivers[$i];
-                    if ($this->drivers[$i]->getConstructor() != $driverConstructor)
+                    if ($this->drivers[$i]->get_constructor() != $driverConstructor)
                     {
-                        $this->drivers[$i]->changeConstructor($driverConstructor);
+                        $this->drivers[$i]->change_onstructor($driverConstructor);
                     }
-                    $this->drivers[$i]->increasePoints($points);
+                    $this->drivers[$i]->increase_points($points);
                     $driverAlreadyExists = true;
                     break;
                 }
@@ -145,6 +143,8 @@ class season
             {
                 $race->setFastestLapTime($fastestLapTime, $currentDriver);
             }
+
+            $currentDriver->change_price();
         }
     }
 

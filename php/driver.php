@@ -7,19 +7,16 @@ class driver
     public function __construct($permanentNumber, $points, $code, $givenName, $familyName,
                          $dateOfBirth, $nationality, $driverId, $constructor, $season)
     {
-        $this->permanentNumber = $permanentNumber;
+        $this->permanent_number = $permanentNumber;
         $this->points = $points;
         $this->code = $code;
-        $this->givenName = $givenName;
-        $this->familyName = $familyName;
-        $this->dateOfBirth = $dateOfBirth;
+        $this->given_name = $givenName;
+        $this->family_name = $familyName;
+        $this->date_of_birth = $dateOfBirth;
         $this->nationality = $nationality;
-        $this->driverId = $driverId;
+        $this->driver_id = $driverId;
         $this->constructor = $constructor;
         $this->season = $season;
-
-        //VERY TEMPORARY
-        $this->price = 100000;
 
         $constructor_id = $this->constructor->get_constructor_id();
 
@@ -35,9 +32,9 @@ class driver
             "
                 INSERT INTO drivers (permanent_number, points, code, price, given_name, 
                 family_name, date_of_birth, nationality, driver_id, constructor_id, season)
-                VALUES ('$this->permanentNumber', '$this->points', '$this->code',
-                 '$this->price', '$this->givenName', '$this->familyName',
-                '$this->dateOfBirth', '$this->nationality', '$this->driverId', '$constructor_id', '$this->season')
+                VALUES ('$this->permanent_number', '$this->points', '$this->code',
+                 '$this->price', '$this->given_name', '$this->family_name',
+                '$this->date_of_birth', '$this->nationality', '$this->driver_id', '$constructor_id', '$this->season')
             ";
 
         mysqli_query($link, $query);
@@ -45,9 +42,41 @@ class driver
         $link->close();
     }
 
-    public function set_price($price)
+    public function change_price()
     {
-        $this->price = $price;
+        require_once("dbh.php");
+        $link = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+        if ($link->connect_error)
+        {
+            die("Connection failed " . $link->connect_error);
+        }
+
+        $position = $i = 0;
+        $resource = $link->query("SELECT * FROM race_results WHERE driver_id='$this->driver_id'");
+        while ($row = $resource->fetch_assoc())
+        {
+            $i += 1;
+            $position += "{$row['position']}";
+
+        }
+
+        $average = $position/$i;
+
+        $this->price = 1000000 - $average*45000;
+
+        $query =
+            "
+                UPDATE drivers
+                SET 
+                    price = '$this->price'
+                WHERE
+                    driver_id = '$this->driver_id';
+            ";
+
+        mysqli_query($link, $query);
+
+
+        mysqli_close($link);
     }
 
     public function change_constructor($newConstructor)
@@ -73,7 +102,7 @@ class driver
                 SET 
                     points = '$this->points'
                 WHERE
-                    driver_id = '$this->driverId';
+                    driver_id = '$this->driver_id';
             ";
 
         mysqli_query($link, $query);
@@ -83,12 +112,12 @@ class driver
 
     public function get_driver_id()
     {
-        return $this->driverId;
+        return $this->driver_id;
     }
 
     public function get_full_name()
     {
-        return ($this->givenName . " " . $this->familyName);
+        return ($this->given_name . " " . $this->family_name);
     }
 
     public function get_constructor()
@@ -106,15 +135,15 @@ class driver
         return $this->price;
     }
 
-    private $permanentNumber;
+    private $permanent_number;
     private $points;
     private $code;
     private $price;
-    private $givenName;
-    private $familyName;
-    private $dateOfBirth;
+    private $given_name;
+    private $family_name;
+    private $date_of_birth;
     private $nationality;
-    private $driverId;
+    private $driver_id;
     private $constructor;
     private $season;
 }
