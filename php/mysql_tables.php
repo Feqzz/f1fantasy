@@ -96,6 +96,26 @@ $constructor_table_query =
         )
     ";
 
+$player_table_query =
+    "
+        CREATE TABLE IF NOT EXISTS players (
+        id INT PRIMARY KEY,
+        money INT,
+        points INT,
+        driver_one VARCHAR(30),
+        driver_two VARCHAR(30),
+        driver_three VARCHAR(30),
+        driver_four VARCHAR(30),
+        driver_five VARCHAR(30),
+        UNIQUE KEY (id),
+        FOREIGN KEY (driver_one) REFERENCES drivers(driver_id),
+        FOREIGN KEY (driver_two) REFERENCES drivers(driver_id),
+        FOREIGN KEY (driver_three) REFERENCES drivers(driver_id),
+        FOREIGN KEY (driver_four) REFERENCES drivers(driver_id),
+        FOREIGN KEY (id) REFERENCES users(id)
+        )
+    ";
+
 mysqli_query($link, $season_table_query);
 mysqli_query($link, $constructor_table_query);
 mysqli_query($link, $drivers_table_query);
