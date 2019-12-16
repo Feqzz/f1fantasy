@@ -60,9 +60,10 @@ class driver
 
         }
 
-        $average = $position/$i;
+        $float = ($position/$i) * 10;
+        $average = round($float);
 
-        $this->price = 1000000 - $average*45000;
+        $this->price = 1000000 - $average*4500;
 
         $query =
             "
@@ -74,8 +75,6 @@ class driver
             ";
 
         mysqli_query($link, $query);
-
-
         mysqli_close($link);
     }
 
