@@ -18,6 +18,9 @@ class driver
         $this->constructor = $constructor;
         $this->season = $season;
 
+        //VERY TEMPORARY
+        $this->price = 100000;
+
         $constructor_id = $this->constructor->get_constructor_id();
 
         require_once("dbh.php");
@@ -42,17 +45,17 @@ class driver
         $link->close();
     }
 
-    public function setPrice($price)
+    public function set_price($price)
     {
         $this->price = $price;
     }
 
-    public function changeConstructor($newConstructor)
+    public function change_constructor($newConstructor)
     {
         $this->constructor = $newConstructor;
     }
 
-    public function increasePoints($newPoints)
+    public function increase_points($newPoints)
     {
         $this->points += $newPoints;
 
@@ -83,19 +86,24 @@ class driver
         return $this->driverId;
     }
 
-    public function getFullName()
+    public function get_full_name()
     {
         return ($this->givenName . " " . $this->familyName);
     }
 
-    public function getConstructor()
+    public function get_constructor()
     {
         return $this->constructor;
     }
 
-    public function getPoints()
+    public function get_points()
     {
         return $this->points;
+    }
+
+    public function get_price()
+    {
+        return $this->price;
     }
 
     private $permanentNumber;
