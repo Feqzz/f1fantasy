@@ -68,16 +68,14 @@ class season
         {
             $position = (int)$Result->attributes()->{'position'};
             $points = (int)$Result->attributes()->{'points'};
-            $permanentNumber =  (int)$Result->Driver->PermanentNumber;
-            $driverId = (string)$Result->Driver->attributes()->{'driverId'};
-            $code = (string)$Result->Driver->attributes()->{'code'};
-            $givenName = (string)$Result->Driver->GivenName;
-            $familyName = (string)$Result->Driver->FamilyName;
-            $dateOfBirth = (string)$Result->Driver->DateOfBirth;
+            $permanent_number =  (int)$Result->Driver->PermanentNumber;
+            $driver_id= (string)$Result->Driver->GivenName;
+            $family_name = (string)$Result->Driver->FamilyName;
+            $date_of_birth = (string)$Result->Driver->DateOfBirth;
             $nationality = (string)$Result->Driver->Nationality;
-            $constructorId = (string)$Result->Constructor->attributes()->{'constructorId'};
-            $constructorName = (string)$Result->Constructor->Name;
-            $constructorNationality = (string)$Result->Constructor->Nationality;
+            $constructor_id = (string)$Result->Constructor->attributes()->{'constructorId'};
+            $constructor_name = (string)$Result->Constructor->Name;
+            $constructor_nationality = (string)$Result->Constructor->Nationality;
             $laps = (int)$Result->Laps;
             if ($laps > 20)
             {
@@ -89,62 +87,63 @@ class season
                 $fastestLapRank = -1;
                 $fastestLapTime = "Retired from race too early";
             }
-            $constructorAlreadyExists = false;
-            $driverAlreadyExists = false;
-            $driverConstructor = null;
-            $currentDriver = null;
+            $constructor_already_exists = false;
+            $driver_already_exists = false;
+            $driver_constructor = null;
+            $current_driver = null;
 
             for ($i = 0; $i < count($this->constructors); $i++)
             {
-                if ($this->constructors[$i]->get_constructor_id() == $constructorId)
+                if ($this->constructors[$i]->get_constructor_id() == $constructor_id)
                 {
-                    $constructorAlreadyExists = true;
-                    $driverConstructor = $this->constructors[$i];
+                    $constructor_already_exists = true;
+                    $driver_constructor = $this->constructors[$i];
                     break;
                 }
             }
 
-            if (!$constructorAlreadyExists)
+            if (!$constructor_already_exists)
             {
-                $driverConstructor = new constructor($constructorId, $constructorName, $constructorNationality, $season);
-                array_push($this->constructors, $driverConstructor);
+                $driver_constructor = new constructor($constructor_id, $constructor_name, $constructor_nationality, $season);
+                array_push($this->constructors, $driver_constructor);
             }
 
-            $race->addConstructor($driverConstructor);
+            $race->addConstructor($driver_constructor);
 
             for ($i = 0; $i < count($this->drivers); $i++)
             {
-                if ($this->drivers[$i]->get_driver_id() == $driverId)
+                if ($this->drivers[$i]->get_driver_id() == $driver_id)
                 {
-                    $currentDriver = $this->drivers[$i];
-                    if ($this->drivers[$i]->get_constructor() != $driverConstructor)
+                    $current_driver = $this->drivers[$i];
+                    if ($this->drivers[$i]->get_constructor() != $driver_constructor)
                     {
-                        $this->drivers[$i]->change_onstructor($driverConstructor);
+                        $this->drivers[$i]->change_onstructor($driver_constructor);
                     }
                     $this->drivers[$i]->increase_points($points);
-                    $driverAlreadyExists = true;
+                    $driver_already_exists = true;
                     break;
                 }
             }
 
-            if(!$driverAlreadyExists)
+            if(!$driver_already_exists)
             {
-                $currentDriver = new driver($permanentNumber, $points, $code, $givenName, $familyName, $dateOfBirth, $nationality, $driverId, $driverConstructor, $season);
-                array_push($this->drivers, $currentDriver);
+                $current_driver = new driver($permanent_number, $points, $code, $given_name, $family_name, $date_of_birth, $nationality, $driver_id, $season);
+                $current_driver->set_constructor($driver_constructor);
+                array_push($this->drivers, $current_driver);
             }
 
-            $race->addDriver($currentDriver);
+            $race->addDriver($current_driver);
 
-            $raceResult = new raceResult($currentDriver, $driverConstructor, $position, $points, $fastestLapRank, $fastestLapTime, $race->get_race_id());
+            $raceResult = new raceResult($current_driver, $driver_constructor, $position, $points, $fastestLapRank, $fastestLapTime, $race->get_race_id());
 
             $race->addRaceResult($raceResult);
 
             if ($fastestLapRank == 1)
             {
-                $race->setFastestLapTime($fastestLapTime, $currentDriver);
+                $race->setFastestLapTime($fastestLapTime, $current_driver);
             }
 
-            $currentDriver->change_price();
+            $current_driver->change_price();
         }
     }
 
