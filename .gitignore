@@ -13,6 +13,7 @@
 
 vcpkg/
 .idea/
+bootstrap/
 
 f1fantasy.sln
 output.txt
