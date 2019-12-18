@@ -122,5 +122,6 @@ mysqli_query($link, $drivers_table_query);
 mysqli_query($link, $races_table_query);
 mysqli_query($link, $race_results_table_query);
 mysqli_query($link, $user_table_query);
+mysqli_query($link,$player_table_query);
 
 $link->close();
