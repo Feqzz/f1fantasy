@@ -15,8 +15,6 @@ class raceResult
         $this->fastest_lap_time = $fastest_lap_time;
 
         require_once("dbh.php");
-
-
         $link = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
         if ($link->connect_error)
         {
