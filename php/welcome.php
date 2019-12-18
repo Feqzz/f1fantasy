@@ -63,7 +63,7 @@ mysqli_close($link);
             <p class="text-center">Spill laget Stian Onarheim https://github.com/Feqzz <br/> Grafisk design av Kornelius Hauge </p>
         </div>
         <div class="row features">
-            <div class="col-sm-6 col-lg-4 item"><i class="fa fa-map-marker icon"></i>
+            <div class="col-sm-6 col-lg-4 item"><i class=""></i>
                 <h3 class="name">How to play</h3>
                 <p class="description">Buy five players with the money you have. As the races goes by, points will be added.</p>
             </div>
@@ -80,7 +80,7 @@ mysqli_close($link);
     <div class="row">
         <div class="col text-center">
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-            <button class="btn btn-primary" type="submit" style="width: 256px; background-color: rgb(255,57,57);height: 64px;padding: 0px;" value="Submit" name="play_button">Start Playing!
+            <button class="btn btn-primary" type="submit" style="width: 256px; background-color: rgb(255,57,57);height: 64px;" value="Submit" name="play_button">Start Playing!
             </button>
             </form>
         </div>
@@ -89,5 +89,4 @@ mysqli_close($link);
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
-
 </html>

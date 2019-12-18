@@ -1,6 +1,6 @@
 <?php
 // Initialize the session
-require_once("dbh.php");
+require_once("../php/dbh.php");
 $link = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 if ($link->connect_error)
 {
@@ -9,15 +9,13 @@ if ($link->connect_error)
 
 session_start();
 
-// Check if the user is already logged in, if yes then redirect him to welcome page
+
 if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
     header("location: welcome.php");
     exit;
 }
 
-// Include config file
 
-// Define variables and initialize with empty values
 $username = $password = "";
 $username_err = $password_err = "";
 
@@ -70,7 +68,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $_SESSION["username"] = $username;
 
                             // Redirect user to welcome page
-                            header("location: welcome.php");
+                            header("location: ../php/choose_drivers.php");
                         } else{
                             // Display an error message if password is not valid
                             $password_err = "The password you entered was not valid.";
@@ -95,36 +93,36 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
-    <style type="text/css">
-        body{ font: 14px sans-serif; }
-        .wrapper{ width: 350px; padding: 20px; margin: 20px auto; }
-    </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Log in</title>
+    <link rel="stylesheet" href="../bootstrap/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../bootstrap/assets/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="../bootstrap/assets/css/Login-Form-Dark.css">
+    <link rel="stylesheet" href="../bootstrap/assets/css/styles.css">
 </head>
-<body>
-<div class="wrapper">
-    <h2>Login</h2>
-    <p>Please fill in your credentials to login.</p>
+
+<body><div class="login-dark">
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+        <h2 class="sr-only">Login Form</h2>
+        <div class="illustration"><img src="../bootstrap/assets/img/f1_logo.svg"></div>
         <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
-            <label>Username</label>
-            <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
+            <input type="text" name="username" class="form-control" placeholder="Username" value="<?php echo $username; ?>">
             <span class="help-block"><?php echo $username_err; ?></span>
         </div>
         <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
-            <label>Password</label>
-            <input type="password" name="password" class="form-control">
+            <input type="password" name="password" placeholder="Password" class="form-control">
             <span class="help-block"><?php echo $password_err; ?></span>
         </div>
-        <div class="form-group">
-            <input type="submit" class="btn btn-primary" value="Login">
-        </div>
-        <p>Don't have an account? <a href="register.php">Sign up now</a>.</p>
+        <div class="form-group"><button class="btn btn-primary btn-block" style="background-color: rgb(255,57,57);" type="submit">Log In</button></div>
+        <p>Don't have an account? <a href="register.php">Sign up</a></p>
     </form>
 </div>
+<script src="../bootstrap/assets/js/jquery.min.js"></script>
+<script src="../bootstrap/assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>
+
