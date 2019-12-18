@@ -1,6 +1,6 @@
 <?php
 // Include config file
-require_once "dbh.php";
+require_once "../php/dbh.php";
 
 $link = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 if ($link->connect_error)
@@ -100,44 +100,42 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <title>Sign Up</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
-    <style type="text/css">
-
-        body{ font: 14px sans-serif; background-image: url("Screenshot_3.png"); background-size: 100%; }
-        .wrapper{ width: 350px; padding: 20px; margin: 20px auto; }
-        .margin: auto
-    </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Register</title>
+    <link rel="stylesheet" href="../bootstrap/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../bootstrap/assets/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="../bootstrap/assets/css/Login-Form-Dark.css">
+    <link rel="stylesheet" href="../bootstrap/assets/css/styles.css">
 </head>
-<body>
-<div class="wrapper">
 
-    <p>Please fill this form to create an account.</p>
+<body><div class="login-dark">
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+        <h2 class="sr-only">Register Form</h2>
+        <div class="illustration"><img src="../bootstrap/assets/img/f1_logo.svg"></div>
         <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
-            <label>Username</label>
-            <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
+            <input type="text" name="username" class="form-control" placeholder="Username" value="<?php echo $username; ?>">
             <span class="help-block"><?php echo $username_err; ?></span>
         </div>
         <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
-            <label>Password</label>
-            <input type="password" name="password" class="form-control" value="<?php echo $password; ?>">
+            <input type="password" name="password" class="form-control" placeholder="Password" value="<?php echo $password; ?>">
             <span class="help-block"><?php echo $password_err; ?></span>
         </div>
         <div class="form-group <?php echo (!empty($confirm_password_err)) ? 'has-error' : ''; ?>">
-            <label>Confirm Password</label>
-            <input type="password" name="confirm_password" class="form-control" value="<?php echo $confirm_password; ?>">
+            <input type="password" name="confirm_password" class="form-control" placeholder="Confirm Password" value="<?php echo $confirm_password; ?>">
             <span class="help-block"><?php echo $confirm_password_err; ?></span>
         </div>
         <div class="form-group">
-            <input type="submit" class="btn btn-primary" value="Submit">
-            <input type="reset" class="btn btn-default" value="Reset">
+            <button class="btn btn-primary btn-block" style="background-color: rgb(255,57,57);" type="submit" value="Submit">Register</button>
+            <button class="btn btn-secondary btn-block" type="reset" value="Reset">Reset</button>
         </div>
-        <p>Already have an account? <a href="login.php">Login here</a>.</p>
+        <p>Already a user? <a href="login.php">Log in</a></p>
     </form>
 </div>
+<script src="../bootstrap/assets/js/jquery.min.js"></script>
+<script src="../bootstrap/assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>
