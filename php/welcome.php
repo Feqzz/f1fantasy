@@ -6,6 +6,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     exit;
 }
 
+
 require_once("player.php");
 require_once("dbh.php");
 $link = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
@@ -14,26 +15,27 @@ if ($link->connect_error)
     die("Connection failed " . $link->connect_error);
 }
 
-$user_id = $_SESSION["id"];
-//Check if logged in user already has a player.
-
-$found = null;
-$sql = "SELECT count(1) FROM players WHERE id = ?";
-$stmt = mysqli_prepare($link, $sql);
-mysqli_stmt_bind_param($stmt, "s", $user_id);
-mysqli_stmt_execute($stmt);
-mysqli_stmt_bind_result($stmt, $found);
-mysqli_stmt_fetch($stmt);
-if ($found)
+if($_SESSION["loggedin"])
 {
-    header("location: choose_drivers.php");
-}
+    $user_id = $_SESSION["id"];
+    //Check if logged in user already has a player.
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['test']))
-{
-    //Make a new player object. The constructor will send it to the database. :)
-    $players = new player($user_id);
-    header("location: choose_drivers.php");
+    $found = null;
+    $sql = "SELECT count(1) FROM players WHERE id = ?";
+    $stmt = mysqli_prepare($link, $sql);
+    mysqli_stmt_bind_param($stmt, "s", $user_id);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $found);
+    mysqli_stmt_fetch($stmt);
+    if ($found) {
+        //header("location: choose_drivers.php");
+    }
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['play_button'])) {
+        //Make a new player object. The constructor will send it to the database. :)
+        $players = new player($user_id);
+        header("location: choose_drivers.php");
+    }
 }
 
 mysqli_close($link);
@@ -41,20 +43,51 @@ mysqli_close($link);
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1,
-     shrink-to-fit=no">
-    <title>F1 Fantasy</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-          crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Welcome</title>
+    <link rel="stylesheet" href="../bootstrap/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../bootstrap/assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="../bootstrap/assets/css/Features-Clean.css">
+    <link rel="stylesheet" href="../bootstrap/assets/css/styles.css">
 </head>
-<body>
-<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 
-    <button type="submit" class="btn btn-primary" value="Submit" name="test">Join the game</button>
-</form>
+<body>
+<div class="features-clean">
+    <div class="container">
+        <div class="intro">
+            <h2 class="text-center">F1 Fantasy</h2>
+            <p class="text-center">Spill laget Stian Onarheim https://github.com/Feqzz <br/> Grafisk design av Kornelius Hauge </p>
+        </div>
+        <div class="row features">
+            <div class="col-sm-6 col-lg-4 item"><i class="fa fa-map-marker icon"></i>
+                <h3 class="name">How to play</h3>
+                <p class="description">Buy five players with the money you have. As the races goes by, points will be added.</p>
+            </div>
+            <div class="col-sm-6 col-lg-4 item"><i class="fa fa-clock-o icon"></i>
+                <h3 class="name">Replay 2019 Season</h3>
+                <p class="description">While we wait for the 2020 season to start. Try replaying the 2019 season.</p>
+            </div>
+            <div class="col-sm-6 col-lg-4 item"><i class="fa fa-list-alt icon"></i>
+                <h3 class="name">2020 Season</h3>
+                <p class="description">The drivers will be ready 15. March in Melbourne, Australia. </p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-center">
+            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+            <button class="btn btn-primary" type="submit" style="width: 256px; background-color: rgb(255,57,57);height: 64px;padding: 0px;" value="Submit" name="play_button">Start Playing!
+            </button>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
+
 </html>
