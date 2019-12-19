@@ -27,6 +27,19 @@ $season_table_query =
         )
     ";
 
+$constructor_table_query =
+    "
+        CREATE TABLE IF NOT EXISTS constructors (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        constructor_id VARCHAR(30),
+        name VARCHAR(30),
+        nationality VARCHAR(30),
+        season INT(5),
+        UNIQUE KEY (constructor_id),
+        FOREIGN KEY (season) REFERENCES season(year)
+        )
+    ";
+
 $drivers_table_query =
     "
         CREATE TABLE IF NOT EXISTS drivers (
@@ -62,7 +75,8 @@ $races_table_query =
         fastest_lap_driver_id VARCHAR(30),
         season INT(5),
         UNIQUE KEY (date, race_id),
-        FOREIGN KEY (season) REFERENCES season(year)
+        FOREIGN KEY (season) REFERENCES season(year),
+        FOREIGN KEY (fastest_lap_driver_id) REFERENCES drivers(driver_id)
         )
     ";
 
@@ -83,18 +97,7 @@ $race_results_table_query =
         )
     ";
 
-$constructor_table_query =
-    "
-        CREATE TABLE IF NOT EXISTS constructors (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        constructor_id VARCHAR(30),
-        name VARCHAR(30),
-        nationality VARCHAR(30),
-        season INT(5),
-        UNIQUE KEY (constructor_id),
-        FOREIGN KEY (season) REFERENCES season(year)
-        )
-    ";
+
 
 $player_table_query =
     "
@@ -116,12 +119,12 @@ $player_table_query =
         )
     ";
 
+mysqli_query($link, $user_table_query);
 mysqli_query($link, $season_table_query);
 mysqli_query($link, $constructor_table_query);
 mysqli_query($link, $drivers_table_query);
 mysqli_query($link, $races_table_query);
 mysqli_query($link, $race_results_table_query);
-mysqli_query($link, $user_table_query);
 mysqli_query($link,$player_table_query);
 
-$link->close();
+mysqli_close($link);
