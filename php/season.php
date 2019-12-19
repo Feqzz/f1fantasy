@@ -48,28 +48,26 @@ class season
         $country = (string)$MRData->RaceTable->Race->Circuit->Location->Country;
         $date = (string)$MRData->RaceTable->Race->Date;
 
-        $race = new race($season,$round,$race_name,$circuitId, $circuitName, $country, $date);
-
         for ($i = 0; $i < count($this->races); $i++)
         {
             if ($this->races[$i]->getRound() == $round)
             {
+                //Race already exists
                 return;
             }
         }
 
-        array_push($this->races, $race);
 
         //Getting driver data
-
-
 
         foreach($MRData->RaceTable->Race->ResultsList->Result as $Result)
         {
             $position = (int)$Result->attributes()->{'position'};
             $points = (int)$Result->attributes()->{'points'};
+            $driver_id = (string)$Result->Driver->attributes()->{'driverId'};
+            $code = (string)$Result->Driver->attributes()->{'code'};
             $permanent_number =  (int)$Result->Driver->PermanentNumber;
-            $driver_id= (string)$Result->Driver->GivenName;
+            $given_name= (string)$Result->Driver->GivenName;
             $family_name = (string)$Result->Driver->FamilyName;
             $date_of_birth = (string)$Result->Driver->DateOfBirth;
             $nationality = (string)$Result->Driver->Nationality;
@@ -108,8 +106,6 @@ class season
                 array_push($this->constructors, $driver_constructor);
             }
 
-            $race->addConstructor($driver_constructor);
-
             for ($i = 0; $i < count($this->drivers); $i++)
             {
                 if ($this->drivers[$i]->get_driver_id() == $driver_id)
@@ -117,7 +113,7 @@ class season
                     $current_driver = $this->drivers[$i];
                     if ($this->drivers[$i]->get_constructor() != $driver_constructor)
                     {
-                        $this->drivers[$i]->change_onstructor($driver_constructor);
+                        $this->drivers[$i]->change_constructor($driver_constructor);
                     }
                     $this->drivers[$i]->increase_points($points);
                     $driver_already_exists = true;
@@ -132,10 +128,11 @@ class season
                 array_push($this->drivers, $current_driver);
             }
 
+            $race = new race($season,$round,$race_name,$circuitId, $circuitName, $country, $date);
+
             $race->addDriver($current_driver);
-
+            $race->addConstructor($driver_constructor);
             $raceResult = new raceResult($current_driver, $driver_constructor, $position, $points, $fastestLapRank, $fastestLapTime, $race->get_race_id());
-
             $race->addRaceResult($raceResult);
 
             if ($fastestLapRank == 1)
@@ -144,6 +141,7 @@ class season
             }
 
             $current_driver->change_price();
+            array_push($this->races, $race);
         }
     }
 
@@ -202,5 +200,4 @@ class season
     private $constructors = array();
     private $races = array();
 }
-
 ?>

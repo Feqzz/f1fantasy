@@ -147,16 +147,10 @@ class player
             die("Connection failed " . $link->connect_error);
         }
 
+        echo "Help I am being sold " . $driver->get_full_name();
+
         $sell_driver = true;
         $query = "";
-        $money_query =
-            "
-                UPDATE players
-                SET
-                    money = '$this->money'
-                WHERE
-                    id = '$this->id';
-            ";
         switch ($driver->get_driver_id())
         {
             case $this->driver_one:
@@ -215,7 +209,15 @@ class player
         }
         if ($sell_driver)
         {
-            $this->money += $driver->get_price();
+            $this->money = $this->money + $driver->get_price();
+            $money_query =
+                "
+                UPDATE players
+                SET
+                    money = '$this->money'
+                WHERE
+                    id = '$this->id';
+            ";
             mysqli_query($link, $query);
             mysqli_query($link, $money_query);
         }

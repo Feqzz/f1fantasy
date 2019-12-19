@@ -1,7 +1,7 @@
 <?php
 
-require_once("player.php");
 require_once("mysql_tables.php");
+require_once("season.php");
 
 //$playerDriver = $_GET["Driver"];
 

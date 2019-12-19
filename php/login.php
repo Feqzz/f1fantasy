@@ -68,7 +68,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $_SESSION["username"] = $username;
 
                             // Redirect user to welcome page
-                            header("location: ../php/choose_drivers.php");
+                            header("location: welcome.php");
                         } else{
                             // Display an error message if password is not valid
                             $password_err = "The password you entered was not valid.";
@@ -99,7 +99,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Log in</title>
-    <link rel="stylesheet" href="../bootstrap/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../bootstrap/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="../bootstrap/assets/fonts/ionicons.min.css">
     <link rel="stylesheet" href="../bootstrap/assets/css/Login-Form-Dark.css">
     <link rel="stylesheet" href="../bootstrap/assets/css/styles.css">
@@ -122,7 +122,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     </form>
 </div>
 <script src="../bootstrap/assets/js/jquery.min.js"></script>
-<script src="../bootstrap/assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="../bootstrap/assets/js/bootstrap.min.js"></script>
 </body>
 </html>
 

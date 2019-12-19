@@ -1,11 +1,12 @@
 <?php
 session_start();
 
-if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true)
+{
+    $_SESSION['driver_to_sell'] = false;
     header("location: login.php");
     exit;
 }
-
 
 require_once("player.php");
 require_once("dbh.php");
@@ -28,12 +29,13 @@ if($_SESSION["loggedin"])
     mysqli_stmt_bind_result($stmt, $found);
     mysqli_stmt_fetch($stmt);
     if ($found) {
-        //header("location: choose_drivers.php");
+        header("location: choose_drivers.php");
     }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['play_button'])) {
         //Make a new player object. The constructor will send it to the database. :)
         $players = new player($user_id);
+        $_SESSION["has_player"] = true;
         header("location: choose_drivers.php");
     }
 }
@@ -49,7 +51,7 @@ mysqli_close($link);
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Welcome</title>
-    <link rel="stylesheet" href="../bootstrap/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../bootstrap/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="../bootstrap/assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="../bootstrap/assets/css/Features-Clean.css">
     <link rel="stylesheet" href="../bootstrap/assets/css/styles.css">
@@ -86,7 +88,7 @@ mysqli_close($link);
         </div>
     </div>
 </div>
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="../bootstrap/assets/js/jquery.min.js"></script>
+<script src="../bootstrap/assets/js/bootstrap.min.js"></script>
 </body>
 </html>

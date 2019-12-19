@@ -27,11 +27,11 @@ class driver
 
         $query =
             "
-                INSERT INTO drivers (permanent_number, points, code, price, given_name, 
-                family_name, date_of_birth, nationality, driver_id, constructor_id, season)
+                INSERT IGNORE INTO drivers (permanent_number, points, code, price, given_name, 
+                family_name, date_of_birth, nationality, driver_id, season)
                 VALUES ('$this->permanent_number', '$this->points', '$this->code',
                  '$this->price', '$this->given_name', '$this->family_name',
-                '$this->date_of_birth', '$this->nationality', '$this->driver_id', '$this->constructor_id', '$this->season')
+                '$this->date_of_birth', '$this->nationality', '$this->driver_id', '$this->season')
             ";
 
         mysqli_query($link, $query);
@@ -57,10 +57,18 @@ class driver
 
         }
 
-        $float = ($position/$i) * 10;
-        $average = round($float);
+        if ($i != 0)
+        {
 
-        $this->price = 1000000 - $average*4500;
+            $float = ($position / $i) * 10;
+            $average = round($float);
+
+            $this->price = 600000 - $average * 4500;
+        }
+        else
+        {
+            $this->price = 0;
+        }
 
         $query =
             "
@@ -75,9 +83,9 @@ class driver
         mysqli_close($link);
     }
 
-    public function change_constructor($newConstructor)
+    public function change_constructor($new_constructor)
     {
-            $this->constructor = $newConstructor;
+            $this->constructor = $new_constructor;
     }
 
     public function increase_points($newPoints)
@@ -138,11 +146,36 @@ class driver
     {
         $this->constructor = $constructor;
         $this->constructor_id = $constructor->get_constructor_id();
+
+        require_once("dbh.php");
+        $link = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+        if ($link->connect_error)
+        {
+            die("Connection failed " . $link->connect_error);
+        }
+
+        $query =
+            "
+                UPDATE drivers
+                SET
+                    constructor_id = '$this->constructor_id'
+                WHERE
+                    driver_id = '$this->driver_id'
+            ";
+
+        mysqli_query($link, $query);
+        mysqli_close($link);
+
     }
 
     public function set_constructor_id($constructor_id)
     {
         $this->constructor_id = $constructor_id;
+    }
+
+    public function set_price($price)
+    {
+        $this->price = $price;
     }
 
     private $permanent_number;
