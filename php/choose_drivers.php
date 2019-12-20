@@ -6,8 +6,9 @@ require_once("dbh.php");
 session_start();
 
 // Check if the user is logged in, if not then redirect him to login page
-if(!isset($_SESSION["has_player"]) || $_SESSION["has_player"] !== true){
-    header("location: welcome.php");
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true)
+{
+    header("location: login.php");
     exit;
 }
 
@@ -62,33 +63,42 @@ while ($row = $resource->fetch_assoc()) {
     $driver_five = "{$row['driver_five']}";
 }
 
+$player = new player($id);
+
 for ($i = 0; $i < count($drivers_array); $i++)
 {
     switch ($drivers_array[$i]->get_driver_id())
     {
         case $driver_one:
             $driver_one = $drivers_array[$i];
+            array_push($player->drivers, $driver_one);
             break;
         case $driver_two:
             $driver_two = $drivers_array[$i];
+            array_push($player->drivers, $driver_two);
             break;
         case $driver_three:
             $driver_three = $drivers_array[$i];
+            array_push($player->drivers, $driver_three);
             break;
         case $driver_four:
             $driver_four = $drivers_array[$i];
+            array_push($player->drivers, $driver_four);
             break;
         case $driver_five:
             $driver_five = $drivers_array[$i];
+            array_push($player->drivers, $driver_five);
             break;
     }
 }
 
-$player = new player($id);
 
-if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['products']))
+
+
+if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['buy']))
 {
-    $driver_full_name = trim($_POST['products']);
+
+    $driver_full_name = trim($_POST['buy']);
     for ($i = 0; $i < count($drivers_array); $i++)
     {
         if ($drivers_array[$i]->get_full_name() == $driver_full_name)
@@ -101,32 +111,28 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['products']))
     {
         $player->add_driver($chosen_driver);
     }
-    header("location: choose_drivers.php");
+    header("location: welcome.php");
     exit;
+
 }
 
-//Yes I know this looks very dumb lmao.
 $driver_to_sell = $_SESSION['driver_to_sell'];
 
-if(isset($_GET['sell_driver_one']))
+for ($i = 0; $i < 5; $i++)
 {
-    $_SESSION['driver_to_sell'] = $driver_one;
-}
-if(isset($_GET['sell_driver_two']))
-{
-    $_SESSION['driver_to_sell'] = $driver_two;
-}
-if(isset($_GET['sell_driver_three']))
-{
-    $_SESSION['driver_to_sell'] = $driver_three;
-}
-if(isset($_GET['sell_driver_four']))
-{
-    $_SESSION['driver_to_sell'] = $driver_four;
-}
-if(isset($_GET['sell_driver_five']))
-{
-    $_SESSION['driver_to_sell'] = $driver_five;
+    $string = "active_slot_" . $i;
+    if(isset($_GET[$string]))
+    {
+        if($i < count($player->drivers))
+        {
+            $_SESSION['driver_to_sell'] = $player->drivers[$i];
+        }
+        else
+        {
+            $_SESSION['driver_to_sell'] = null;
+            $_SESSION['buy_menu'] = true;
+        }
+    }
 }
 
 if (isset($_POST['sell']))
@@ -136,17 +142,12 @@ if (isset($_POST['sell']))
         $player->sell_driver($_SESSION['driver_to_sell']);
         $driver_to_sell = null;
         $_SESSION['driver_to_sell'] = $driver_to_sell;
-        header("location: choose_drivers.php");
+        header("location: welcome.php");
         exit;
     }
 }
 
 $driver_to_sell = $_SESSION['driver_to_sell'];
-
-
-
-
-
 
 mysqli_close($link);
 
@@ -172,7 +173,7 @@ mysqli_close($link);
         <div class="row">
             <div class="col-md-12">
                 <nav class="navbar navbar-light navbar-expand-md navigation-clean">
-                    <div class="container"><a class="navbar-brand" href="#">F1 Fantasy</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                    <div class="container"><a class="navbar-brand" href="welcome.php">F1 Fantasy</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                         <div
                                 class="collapse navbar-collapse" id="navcol-1">
                             <ul class="nav navbar-nav ml-auto">
@@ -192,78 +193,25 @@ mysqli_close($link);
         <div class="row">
             <div class="col-md-3">
                 <aside>
-                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                        <select name="products">
-                            <option select="selected">Choose one</option>
-                            <?php
-                            for ($i = 0; $i < count($drivers_array); $i++)
-                            {
-                                $item = $drivers_array[$i]->get_full_name();
-                                ?>
-                                <option value="<?php echo $item; ?>"><?php echo $item; ?>
-                                </option>
-                                <?php
-                            }
-                            ?>
-                        </select>
-                        <input type="submit" value="Submit">
-                    </form>
                     <a href="simulate_2019_season.php">Simulate 2019 Season</a>
                 </aside>
             </div>
             <div class="col-md-9">
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-4">
-                            <a href="?sell_driver_one" style="text-decoration: none">
-                            <div class="card border-0">
-                                <div class="card-body">
-                                    <img src="../bootstrap/assets/img/drivers/<?php if($driver_one) {echo $driver_one->get_driver_id();} else {echo "empty";}?>.png" style="height:200px;width:200px;">
-                                    <h6 class="text-muted card-subtitle mb-2"><br> <?php if($driver_one) {echo $driver_one->get_full_name();} else {echo "Available";} ?> <br> $<?php if ($driver_one) {echo $driver_one->get_price();} ?></h6>
-                                </div>
+                        <?php if(!$_SESSION['buy_menu']) {?>
+                        <?php for ($i = 0; $i < 5; $i++) { ?>
+                            <div class="col-md-4">
+                                <a href="?active_slot_<?php echo $i; ?>" style="text-decoration: none">
+                                    <div class="card border-0">
+                                        <div class="card-body">
+                                            <img src="../bootstrap/assets/img/drivers/<?php if($i < count($player->drivers)) {echo $player->drivers[$i]->get_driver_id();} else {echo "empty";}?>.png" style="height:200px;width:200px;">
+                                            <h6 class="text-muted card-subtitle mb-2"><br> <?php if($i < count($player->drivers)) {echo $player->drivers[$i]->get_full_name();} else {echo "Available";} ?> <br> $<?php if ($i < count($player->drivers)) {echo $player->drivers[$i]->get_price();} ?></h6>
+                                        </div>
+                                    </div>
+                                </a>
                             </div>
-                            </a>
-                        </div>
-                        <div class="col-md-4">
-                            <a href="?sell_driver_two" onclick="" style="text-decoration: none">
-                                <div class="card border-0">
-                                    <div class="card-body">
-                                        <img src="../bootstrap/assets/img/drivers/<?php if($driver_two) {echo $driver_two->get_driver_id();} else {echo "empty";}?>.png" style="height:200px;width:200px;">
-                                        <h6 class="text-muted card-subtitle mb-2"><br> <?php if($driver_two) {echo $driver_two->get_full_name();} else {echo "Available";} ?> <br> $<?php if ($driver_two) {echo $driver_two->get_price();} ?></h6>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-md-4">
-                            <a href="?sell_driver_three" style="text-decoration: none">
-                                <div class="card border-0">
-                                    <div class="card-body">
-                                        <img src="../bootstrap/assets/img/drivers/<?php if($driver_three) {echo $driver_three->get_driver_id();} else {echo "empty";}?>.png" style="height:200px;width:200px;">
-                                        <h6 class="text-muted card-subtitle mb-2"><br> <?php if($driver_three) {echo $driver_three->get_full_name();} else {echo "Available";} ?> <br> $<?php if ($driver_three) {echo $driver_three->get_price();} ?></h6>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-md-4">
-                            <a href="?sell_driver_four" style="text-decoration: none">
-                                <div class="card border-0">
-                                    <div class="card-body border-0">
-                                        <img src="../bootstrap/assets/img/drivers/<?php if($driver_four) {echo $driver_four->get_driver_id();} else {echo "empty";}?>.png" style="height:200px;width:200px;">
-                                        <h6 class="text-muted card-subtitle mb-2"><br> <?php if($driver_four) {echo $driver_four->get_full_name();} else {echo "Available";} ?> <br> <?php if ($driver_four) {echo "$" . $driver_four->get_price();} else {echo "-";} ?></h6>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-md-4">
-                            <a href="?sell_driver_five" style="text-decoration: none">
-                                <div class="card border-0">
-                                    <div class="card-body">
-                                        <img src="../bootstrap/assets/img/drivers/<?php if($driver_five) {echo $driver_five->get_driver_id();} else {echo "empty";}?>.png" style="height:200px;width:200px;">
-                                        <h6 class="text-muted card-subtitle mb-2"><br> <?php if($driver_five) {echo $driver_five->get_full_name();} else {echo "Available";} ?> <br> $<?php if ($driver_five) {echo $driver_five->get_price();} ?></h6>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
+                        <?php } ?>
                         <div class="col-md-4">
                             <div class="card border-0">
                                 <div class="card-body">
@@ -274,7 +222,21 @@ mysqli_close($link);
                                 </div>
                             </div>
                         </div>
-
+                        <?php } else {?>
+                            <?php for ($i = 0; $i < count($drivers_array); $i++) { if(!(in_array($drivers_array[$i],$player->drivers))) { ?>
+                                <div class="col-md-4">
+                                    <div class="card border-0">
+                                        <div class="card-body">
+                                            <img src="../bootstrap/assets/img/drivers/<?php echo $drivers_array[$i]->get_driver_id(); ?>.png" style="height:200px;width:200px;">
+                                            <h6 class="text-muted card-subtitle mb-2"><br> <?php echo $drivers_array[$i]->get_full_name(); ?> <br> $<?php echo $drivers_array[$i]->get_price(); ?></h6>
+                                            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                                                <button class="btn btn-primary <?php if ($drivers_array[$i]->get_price() > $money) echo "disabled"; ?>" <?php if ($drivers_array[$i]->get_price() > $money) echo "disabled"; ?>  type="submit" style="width: 200px; background-color: rgb(255,57,57);height: 48px;" value="<?php echo $drivers_array[$i]->get_full_name();?>" name="buy" >Buy</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php }} ?>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
