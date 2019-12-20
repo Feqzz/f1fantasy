@@ -2,7 +2,7 @@
 
 require_once("driver.php");
 
-class raceResult
+class race_result
 {
     public function __construct($driver, $constructor, $position, $points, $fastest_lap_rank, $fastest_lap_time, $race_id)
     {
