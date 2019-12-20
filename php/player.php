@@ -232,5 +232,6 @@ class player
     private $driver_three;
     private $driver_four;
     private $driver_five;
+    public $drivers = array();
 
 }
