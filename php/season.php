@@ -26,9 +26,10 @@ class season
         mysqli_close($link);
     }
 
-    function get_race_data($race_number_)
+    public function get_race_data($race_number_)
     {
         $race_number = $race_number_; //Will fix this later. Now it will only be an example.
+
         //Downloads the website to file output.xml
         $website = "https://ergast.com/api/f1/" . $this->year . "/" . $race_number . "/results";
         $xml = file_get_contents($website);
@@ -38,111 +39,145 @@ class season
 
         $MRData = new SimpleXMLElement($file);
 
-        //Getting race information and making a race object.
-
+        //Getting season and information from the file first. Then I check if it already exists in the database.
+        $circuit_id = (string)$MRData->RaceTable->Race->Circuit->attributes()->{'circuitId'};
         $season = (int)$MRData->RaceTable->attributes()->{'season'};
-        $round = (int)$MRData->RaceTable->attributes()->{'round'};
-        $race_name = (string)$MRData->RaceTable->Race->RaceName;
-        $circuitId = (string)$MRData->RaceTable->Race->Circuit->attributes()->{'circuitId'};
-        $circuitName = (string)$MRData->RaceTable->Race->Circuit->CircuitName;
-        $country = (string)$MRData->RaceTable->Race->Circuit->Location->Country;
-        $date = (string)$MRData->RaceTable->Race->Date;
 
-        for ($i = 0; $i < count($this->races); $i++)
+        require_once("dbh.php");
+        $link = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+        if ($link->connect_error)
         {
-            if ($this->races[$i]->getRound() == $round)
+            die("Connection failed " . $link->connect_error);
+        }
+
+        $races_array = array();
+        $resource = $link->query("SELECT * FROM races");
+        while ($row = $resource->fetch_assoc())
+        {
+            $circuit_id_db = "{$row['race_id']}";
+            $season_db = "{$row['season']}";
+            array_push($races_array, array($season_db, $circuit_id_db));
+        }
+
+        for ($i = 0; $i < count($races_array); $i++)
+        {
+            if (($season == $races_array[$i][0]) && ($circuit_id == $races_array[$i][1]))
             {
-                //Race already exists
+                //Race already exists in database..
                 return;
             }
         }
 
+        $round = (int)$MRData->RaceTable->attributes()->{'round'};
+        $race_name = (string)$MRData->RaceTable->Race->RaceName;
+        $circuit_name = (string)$MRData->RaceTable->Race->Circuit->CircuitName;
+        $country = (string)$MRData->RaceTable->Race->Circuit->Location->Country;
+        $date = (string)$MRData->RaceTable->Race->Date;
 
-        //Getting driver data
+        $race = new race($season,$round,$race_name,$circuit_id, $circuit_name, $country, $date);
+
+
+        //Getting data from database. Using it for checking duplicate drivers and constructors.
+        $drivers_array = array();
+        $constructor_array = array();
+        $resource = $link->query("SELECT * FROM drivers");
+        while ($row = $resource->fetch_assoc())
+        {
+            $driver_id_db = "{$row['driver_id']}";
+            $constructor_id_db = "{$row['constructor_id']}";
+            $season_db = "{$row['season']}";
+            array_push($drivers_array, array($season_db, $driver_id_db, $constructor_id_db));
+        }
+        $resource = $link->query("SELECT * FROM constructors");
+        while ($row = $resource->fetch_assoc())
+        {
+            $constructor_id_db = "{$row['constructor_id']}";
+            $season_db = "{$row['season']}";
+            array_push($constructor_array, array($season_db, $constructor_id_db));
+        }
+
+        //Getting driver data from the file and checking it with the array of drivers from the database.
+        $driver_already_exists = false;
 
         foreach($MRData->RaceTable->Race->ResultsList->Result as $Result)
         {
+            $driver_id = (string)$Result->Driver->attributes()->{'driverId'};
+            $constructor_id = (string)$Result->Constructor->attributes()->{'constructorId'};
+            for ($i = 0; $i < count($drivers_array); $i++)
+            {
+                if (($season == $drivers_array[$i][0]) && ($driver_id == $drivers_array[$i][1]))
+                {
+                    if ($constructor_id == $drivers_array[$i][2])
+                    {
+                        $driver_already_exists = true;
+                        break;
+                    }
+                    else
+                    {
+                        $query =
+                            "
+                                UPDATE drivers
+                                SET 
+                                    constructor_id = '$constructor_id'
+                                WHERE
+                                    driver_id = '$driver_id'
+                            ";
+                        mysqli_query($link, $query);
+                    }
+                }
+            }
             $position = (int)$Result->attributes()->{'position'};
             $points = (int)$Result->attributes()->{'points'};
-            $driver_id = (string)$Result->Driver->attributes()->{'driverId'};
             $code = (string)$Result->Driver->attributes()->{'code'};
             $permanent_number =  (int)$Result->Driver->PermanentNumber;
             $given_name= (string)$Result->Driver->GivenName;
             $family_name = (string)$Result->Driver->FamilyName;
             $date_of_birth = (string)$Result->Driver->DateOfBirth;
             $nationality = (string)$Result->Driver->Nationality;
-            $constructor_id = (string)$Result->Constructor->attributes()->{'constructorId'};
             $constructor_name = (string)$Result->Constructor->Name;
             $constructor_nationality = (string)$Result->Constructor->Nationality;
             $laps = (int)$Result->Laps;
             if ($laps > 20)
             {
-                $fastestLapRank = (int)$Result->FastestLap->attributes()->{'rank'};
-                $fastestLapTime = (string)$Result->FastestLap->Time;
+                $fastest_lap_rank = (int)$Result->FastestLap->attributes()->{'rank'};
+                $fastest_lap_time = (string)$Result->FastestLap->Time;
             }
             else
             {
-                $fastestLapRank = -1;
-                $fastestLapTime = "Retired from race too early";
+                $fastest_lap_rank = -1;
+                $fastest_lap_time = "Retired from race too early";
             }
-            $constructor_already_exists = false;
-            $driver_already_exists = false;
-            $driver_constructor = null;
-            $current_driver = null;
 
-            for ($i = 0; $i < count($this->constructors); $i++)
+            for ($i = 0; $i < count($constructor_array); $i++)
             {
-                if ($this->constructors[$i]->get_constructor_id() == $constructor_id)
+                if (($season == $constructor_array[$i][0]) && ($constructor_id == $constructor_array[$i][1]))
                 {
-                    $constructor_already_exists = true;
-                    $driver_constructor = $this->constructors[$i];
                     break;
+                }
+                else
+                {
+                    $drivers_constructor = new constructor($constructor_id, $constructor_name, $constructor_nationality, $season);
                 }
             }
 
-            if (!$constructor_already_exists)
-            {
-                $driver_constructor = new constructor($constructor_id, $constructor_name, $constructor_nationality, $season);
-                array_push($this->constructors, $driver_constructor);
-            }
-
-            for ($i = 0; $i < count($this->drivers); $i++)
-            {
-                if ($this->drivers[$i]->get_driver_id() == $driver_id)
-                {
-                    $current_driver = $this->drivers[$i];
-                    if ($this->drivers[$i]->get_constructor() != $driver_constructor)
-                    {
-                        $this->drivers[$i]->change_constructor($driver_constructor);
-                    }
-                    $this->drivers[$i]->increase_points($points);
-                    $driver_already_exists = true;
-                    break;
-                }
-            }
+            $race_result = new race_result($driver_id, $constructor_id, $position, $points,
+                $fastest_lap_rank, $fastest_lap_time, $race->get_race_id());
 
             if(!$driver_already_exists)
             {
-                $current_driver = new driver($permanent_number, $points, $code, $given_name, $family_name, $date_of_birth, $nationality, $driver_id, $season);
-                $current_driver->set_constructor($driver_constructor);
-                array_push($this->drivers, $current_driver);
+                $driver = new driver($permanent_number, $points, $code, $given_name,
+                    $family_name, $date_of_birth, $nationality, $driver_id, $season);
             }
 
-            $race = new race($season,$round,$race_name,$circuitId, $circuitName, $country, $date);
-
-            $race->addDriver($current_driver);
-            $race->addConstructor($driver_constructor);
-            $raceResult = new raceResult($current_driver, $driver_constructor, $position, $points, $fastestLapRank, $fastestLapTime, $race->get_race_id());
-            $race->addRaceResult($raceResult);
-
-            if ($fastestLapRank == 1)
+            if ($fastest_lap_rank == 1)
             {
-                $race->setFastestLapTime($fastestLapTime, $current_driver);
+                $race->setFastestLapTime($fastest_lap_time, $driver_id);
             }
 
-            $current_driver->change_price();
-            array_push($this->races, $race);
+
         }
+        mysqli_close($link);
+        $this->update_player_results($race);
     }
 
     public function print_all_race_results()
@@ -192,6 +227,33 @@ class season
     public function get_drivers()
     {
         return $this->drivers;
+    }
+
+    private function update_player_results($race)
+    {
+        require_once("dbh.php");
+        $link = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+        if ($link->connect_error)
+        {
+            die("Connection failed " . $link->connect_error);
+        }
+        $race_id = $race->get_race_id();
+
+        $resource = $link->query("SELECT * FROM player_race_results");
+        while ($row = $resource->fetch_assoc())
+        {
+            $id = "{$row['id']}";
+            $query =
+                "
+                UPDATE player_race_results
+                SET 
+                    race_id = '$race_id'
+                WHERE
+                    id = '$id'
+            ";
+            mysqli_query($link, $query);
+        }
+        mysqli_close($link);
     }
 
     private $number_of_races;
