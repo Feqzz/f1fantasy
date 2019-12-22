@@ -19,8 +19,14 @@ if ($link->connect_error)
     die("Connection failed " . $link->connect_error);
 }
 
+$race_to_load = 0;
+
+$get_last_round = mysqli_query($link,"SELECT * FROM races WHERE season='2019' ORDER BY round DESC LIMIT 0, 1");
+$round_array = mysqli_fetch_array($get_last_round);
+
+$race_to_load = $round_array['round'];
+
 $user_id = $_SESSION["id"];
-$race_to_load = 1;
 $race_id = "";
 $circuit_id = "";
 $race_name = "";
@@ -62,8 +68,8 @@ for ($i = 0; $i < count($drivers); $i++)
     while ($row = $resource->fetch_assoc())
     {
         $position = "{$row['position']}";
-        $points = "{$row['points']}";
-        array_push($race_results, array($driver_id, $position, $points));
+        $driver_points = "{$row['points']}";
+        array_push($race_results, array($driver_id, $position, $driver_points));
     }
 }
 mysqli_close($link);
