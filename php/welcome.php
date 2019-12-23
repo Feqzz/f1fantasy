@@ -3,11 +3,9 @@ session_start();
 
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true)
 {
-    $_SESSION['driver_to_sell'] = false;
     header("location: login.php");
     exit;
 }
-
 require_once("player.php");
 require_once("dbh.php");
 $link = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
@@ -16,11 +14,14 @@ if ($link->connect_error)
     die("Connection failed " . $link->connect_error);
 }
 
+$_SESSION['driver_to_sell'] = false;
+$_SESSION['buy_menu'] = false;
+$_SESSION['simulate_2019_season'] = false;
+$_SESSION['show_drivers'] = true;
+
 if($_SESSION["loggedin"])
 {
     $user_id = $_SESSION["id"];
-    //Check if logged in user already has a player.
-
     $found = null;
     $sql = "SELECT count(1) FROM players WHERE id = ?";
     $stmt = mysqli_prepare($link, $sql);
@@ -28,20 +29,17 @@ if($_SESSION["loggedin"])
     mysqli_stmt_execute($stmt);
     mysqli_stmt_bind_result($stmt, $found);
     mysqli_stmt_fetch($stmt);
-    if ($found) {
+    if ($found)
+    {
         header("location: choose_drivers.php");
     }
-
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['play_button'])) {
         //Make a new player object. The constructor will send it to the database. :)
         $players = new player($user_id);
-        $_SESSION["has_player"] = true;
         header("location: choose_drivers.php");
     }
 }
-
 mysqli_close($link);
-
 ?>
 
 <!DOCTYPE html>
