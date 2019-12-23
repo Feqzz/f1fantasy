@@ -23,11 +23,18 @@ while ($row = $resource->fetch_assoc())
     {
         $query =
             "
-            INSERT IGNORE INTO player_race_results (id, driver_one, driver_two, driver_three, driver_four, driver_five)
-            VALUES ('$id', '$driver_one', '$driver_two', '$driver_three', '$driver_four', '$driver_five')
-        ";
+            INSERT INTO player_race_results (id, driver_one, driver_two, driver_three, driver_four, driver_five, redeemed)
+            VALUES ($id, '$driver_one', '$driver_two', '$driver_three', '$driver_four', '$driver_five' , false)
+            ON DUPLICATE KEY UPDATE
+                driver_one = VALUES(driver_one),
+                driver_two = VALUES(driver_two),
+                driver_three = VALUES(driver_three),
+                driver_four = VALUES(driver_four),
+                driver_five = VALUES(driver_five),
+                redeemed = VALUES(redeemed)
+            ";
 
-        mysqli_query($link, $query);
+        $bool = mysqli_query($link, $query);
         echo mysqli_error($link);
     }
 }
