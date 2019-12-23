@@ -59,10 +59,8 @@ class driver
 
         if ($i != 0)
         {
-
             $float = ($position / $i) * 10;
             $average = round($float);
-
             $this->price = 600000 - $average * 4500;
         }
         else
@@ -83,36 +81,8 @@ class driver
         mysqli_close($link);
     }
 
-    public function change_constructor($new_constructor)
-    {
-            $this->constructor = $new_constructor;
-    }
 
-    public function increase_points($newPoints)
-    {
-        $this->points += $newPoints;
 
-        require_once("dbh.php");
-
-        $link = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-        if ($link->connect_error)
-        {
-            die("Connection failed " . $link->connect_error);
-        }
-
-        $query =
-            "
-                UPDATE drivers
-                SET 
-                    points = '$this->points'
-                WHERE
-                    driver_id = '$this->driver_id';
-            ";
-
-        mysqli_query($link, $query);
-
-        $link->close();
-    }
 
     public function get_driver_id()
     {
@@ -140,32 +110,6 @@ class driver
     public function get_price()
     {
         return $this->price;
-    }
-
-    public function set_constructor($constructor)
-    {
-        $this->constructor = $constructor;
-        $this->constructor_id = $constructor->get_constructor_id();
-
-        require_once("dbh.php");
-        $link = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-        if ($link->connect_error)
-        {
-            die("Connection failed " . $link->connect_error);
-        }
-
-        $query =
-            "
-                UPDATE drivers
-                SET
-                    constructor_id = '$this->constructor_id'
-                WHERE
-                    driver_id = '$this->driver_id'
-            ";
-
-        mysqli_query($link, $query);
-        mysqli_close($link);
-
     }
 
     public function set_constructor_id($constructor_id)
