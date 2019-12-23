@@ -173,60 +173,9 @@ class season
             {
                 $race->setFastestLapTime($fastest_lap_time, $driver_id);
             }
-
-
         }
         mysqli_close($link);
         $this->update_player_results($race);
-    }
-
-    public function print_all_race_results()
-    {
-        for ($i = 0; $i < count($this->races); $i++)
-        {
-            $r = $this->races[$i]->getRaceResults();
-            print $this->races[$i]->getRaceName . "<br>\n";
-            for ($j = 0; $j < count($r); $j++)
-            {
-                $r[$j]->printRaceResult();
-
-            }
-            echo "<br>\n";
-        }
-    }
-
-    public function simulate_season()
-    {
-        for ($i = 2; $i <= $this->number_of_races; $i++)
-        {
-            $this->get_race_data($i);
-        }
-    }
-
-    public function add_driver($driver)
-    {
-        array_push($this->drivers, $driver);
-    }
-
-    public function add_constructor($constructor)
-    {
-        if(!in_array($constructor, $this->constructors))
-        {
-            array_push($this->constructors, $constructor);
-        }
-    }
-
-    public function add_race($race)
-    {
-        if(!in_array($race, $this->races))
-        {
-            array_push($this->races, $race);
-        }
-    }
-
-    public function get_drivers()
-    {
-        return $this->drivers;
     }
 
     private function update_player_results($race)
@@ -256,10 +205,24 @@ class season
         mysqli_close($link);
     }
 
+    private function change_driver_price($driver_id)
+    {
+        require_once("dbh.php");
+        $link = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+        if ($link->connect_error)
+        {
+            die("Connection failed " . $link->connect_error);
+        }
+
+        //Ikke sikker enda på hvordan det skal fungere.
+
+
+
+
+        mysqli_close($link);
+    }
+
     private $number_of_races;
     private $year;
-    private $drivers = array();
-    private $constructors = array();
-    private $races = array();
 }
 ?>
