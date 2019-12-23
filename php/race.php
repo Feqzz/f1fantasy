@@ -1,6 +1,6 @@
 <?php
 
-require_once("raceResult.php");
+require_once("race_result.php");
 
 class race
 {
@@ -8,9 +8,9 @@ class race
     {
         $this->season = $season;
         $this->round = $round;
-        $this->raceName = $raceName;
-        $this->circuitId = $circuitId;
-        $this->circuitName = $circuitName;
+        $this->race_name = $raceName;
+        $this->circuit_id = $circuitId;
+        $this->circuit_name = $circuitName;
         $this->country = $country;
         $this->date = $date;
         $this->race_id = $season . "_" . $circuitId;
@@ -27,8 +27,8 @@ class race
             "
                 INSERT IGNORE INTO races (race_id, round, race_name, circuit_id,
                                           circuit_name, country, date, season)
-                VALUES ('$this->race_id', '$this->round','$this->raceName',
-                        '$this->circuitId', '$this->circuitName',
+                VALUES ('$this->race_id', '$this->round','$this->race_name',
+                        '$this->circuit_id', '$this->circuit_name',
                         '$this->country', '$this->date', '$this->season')
             ";
 
@@ -46,12 +46,10 @@ class race
         array_push($this->constructors, $constructor);
     }
 
-    public function setFastestLapTime($lapTime, $driver)
+    public function setFastestLapTime($lap_time, $driver_id)
     {
-        $this->fastestLapTime = $lapTime;
-        $this->fastestLapDriver = $driver;
-
-        $driver_id = $this->fastestLapDriver->get_driver_id();
+        $this->fastest_lap_time = $lap_time;
+        $this->fastest_lap_driver_id = $driver_id;
 
         require_once("dbh.php");
 
@@ -66,19 +64,18 @@ class race
                 UPDATE races
                 SET 
                     fastest_lap_driver_id = '$driver_id',
-                    fastest_lap_time = '$lapTime'
+                    fastest_lap_time = '$lap_time'
                 WHERE
                     race_id = '$this->race_id';
             ";
 
         mysqli_query($link, $query);
-
-        $link->close();
+        mysqli_close($link);
     }
 
     public function addRaceResult($raceResult)
     {
-        array_push($this->raceResults, $raceResult);
+        array_push($this->race_results, $raceResult);
     }
 
     public function getRound()
@@ -86,14 +83,14 @@ class race
         return $this->round;
     }
 
-    public function getRaceResults()
+    public function get_race_results()
     {
-        return $this->raceResults;
+        return $this->race_results;
     }
 
-    public function getRaceName()
+    public function get_race_name()
     {
-        return $this->raceName;
+        return $this->race_name;
     }
 
     public function get_race_id()
@@ -104,17 +101,16 @@ class race
     private $race_id;
     private $season;
     private $round;
-    private $raceName;
-    private $circuitId;
-    private $circuitName;
+    private $race_name;
+    private $circuit_id;
+    private $circuit_name;
     private $country;
     private $date;
-    private $fastestLapTime;
-    private $fastestLapDriver;
+    private $fastest_lap_time;
+    private $fastest_lap_driver_id;
     private $drivers = array();
     private $constructors = array();
-    private $raceResults = array();
-
+    private $race_results = array();
 }
 
 ?>
