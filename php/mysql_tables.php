@@ -115,7 +115,30 @@ $player_table_query =
         FOREIGN KEY (driver_two) REFERENCES drivers(driver_id),
         FOREIGN KEY (driver_three) REFERENCES drivers(driver_id),
         FOREIGN KEY (driver_four) REFERENCES drivers(driver_id),
+        FOREIGN KEY (driver_five) REFERENCES drivers(driver_id),
         FOREIGN KEY (id) REFERENCES users(id)
+        )
+    ";
+
+$player_race_results_query =
+    "
+        CREATE TABLE IF NOT EXISTS player_race_results (
+        id INT PRIMARY KEY,
+        race_id VARCHAR(30),
+        driver_one VARCHAR(30),
+        driver_two VARCHAR(30),
+        driver_three VARCHAR(30),
+        driver_four VARCHAR(30),
+        driver_five VARCHAR(30),
+        redeemed BOOLEAN,
+        UNIQUE KEY (id, race_id),
+        FOREIGN KEY (id) REFERENCES users(id),
+        FOREIGN KEY (race_id) REFERENCES races(race_id),
+        FOREIGN KEY (driver_one) REFERENCES drivers(driver_id),
+        FOREIGN KEY (driver_two) REFERENCES drivers(driver_id),
+        FOREIGN KEY (driver_three) REFERENCES drivers(driver_id),
+        FOREIGN KEY (driver_four) REFERENCES drivers(driver_id),
+        FOREIGN KEY (driver_five) REFERENCES drivers(driver_id)
         )
     ";
 
@@ -126,5 +149,6 @@ mysqli_query($link, $drivers_table_query);
 mysqli_query($link, $races_table_query);
 mysqli_query($link, $race_results_table_query);
 mysqli_query($link,$player_table_query);
+mysqli_query($link, $player_race_results_query);
 
 mysqli_close($link);
