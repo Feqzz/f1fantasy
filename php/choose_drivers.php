@@ -52,7 +52,8 @@ while ($row = $resource->fetch_assoc())
 }
 
 $resource = $link->query("SELECT * FROM players WHERE id='$user_id'");
-while ($row = $resource->fetch_assoc()) {
+while ($row = $resource->fetch_assoc())
+{
     $id = "{$row['id']}";
     $money = "{$row['money']}";
     $points = "{$row['points']}";
@@ -92,9 +93,6 @@ for ($i = 0; $i < count($drivers_array); $i++)
     }
 }
 
-
-
-
 if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['buy']))
 {
 
@@ -130,6 +128,7 @@ for ($i = 0; $i < 5; $i++)
         else
         {
             $_SESSION['driver_to_sell'] = null;
+            $_SESSION['show_drivers'] = false;
             $_SESSION['buy_menu'] = true;
         }
     }
@@ -149,11 +148,13 @@ if (isset($_POST['sell']))
 
 $driver_to_sell = $_SESSION['driver_to_sell'];
 
+if (isset($_GET['simulate_2019_season']))
+{
+    $_SESSION['show_drivers'] = $_SESSION['buy_menu'] = false;
+    $_SESSION['simulate_2019_season'] = true;
+}
 mysqli_close($link);
-
 ?>
-
-
 
 <!DOCTYPE html>
 <html>
@@ -193,36 +194,36 @@ mysqli_close($link);
         <div class="row">
             <div class="col-md-3">
                 <aside>
-                    <a href="simulate_2019_season.php">Simulate 2019 Season</a>
+                    <a href="show_race_result.php">Last race result</a>
                 </aside>
             </div>
             <div class="col-md-9">
                 <div class="container">
                     <div class="row">
-                        <?php if(!$_SESSION['buy_menu']) {?>
+                        <?php switch (true) { case $_SESSION['show_drivers']: {?>
                         <?php for ($i = 0; $i < 5; $i++) { ?>
                             <div class="col-md-4">
                                 <a href="?active_slot_<?php echo $i; ?>" style="text-decoration: none">
                                     <div class="card border-0">
                                         <div class="card-body">
                                             <img src="../bootstrap/assets/img/drivers/<?php if($i < count($player->drivers)) {echo $player->drivers[$i]->get_driver_id();} else {echo "empty";}?>.png" style="height:200px;width:200px;">
-                                            <h6 class="text-muted card-subtitle mb-2"><br> <?php if($i < count($player->drivers)) {echo $player->drivers[$i]->get_full_name();} else {echo "Available";} ?> <br> $<?php if ($i < count($player->drivers)) {echo $player->drivers[$i]->get_price();} ?></h6>
+                                            <h6 class="text-muted card-subtitle mb-2"><br> <?php if($i < count($player->drivers)) {echo $player->drivers[$i]->get_full_name();} else {echo "Available";} ?> <br> <?php if ($i < count($player->drivers)) {echo  "$" . $player->drivers[$i]->get_price();} ?></h6>
+                                            <h6 class="text-muted card-subtitle mb-2"> <?php if (($i < count($player->drivers)) && $_SESSION['driver_to_sell'] == $player->drivers[$i]) { ?>
+                                                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                                                    <button class="btn btn-primary" type="submit" style="width: 200px; background-color: rgb(255,57,57);height: 38px;" value="Submit" name="sell">Sell</button>
+                                                </form>
+                                                <?php
+                                                } else { echo "<br>" . "<br>"; }  ?></h6>
                                         </div>
                                     </div>
                                 </a>
                             </div>
                         <?php } ?>
-                        <div class="col-md-4">
-                            <div class="card border-0">
-                                <div class="card-body">
-                                    <h6 class="text-muted card-subtitle mb-2">Toggle a driver that you want to sell. <br> <?php if($driver_to_sell) echo $_SESSION['driver_to_sell']->get_full_name() . " is toggled and ready to be sold." ?></h6>
-                                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                                        <button class="btn btn-primary" type="submit" style="width: 200px; background-color: rgb(255,57,57);height: 48px;" value="Submit" name="sell">Sell</button>
-                                    </form>
-                                </div>
+                        <?php break; } case $_SESSION['simulate_2019_season']: { ?>
+                            <div class="col-md-9">
+                                <p>Simulate yes yes</p>
                             </div>
-                        </div>
-                        <?php } else {?>
+                        <?php break; } case $_SESSION['buy_menu']: {?>
                             <?php for ($i = 0; $i < count($drivers_array); $i++) { if(!(in_array($drivers_array[$i],$player->drivers))) { ?>
                                 <div class="col-md-4">
                                     <div class="card border-0">
@@ -230,12 +231,12 @@ mysqli_close($link);
                                             <img src="../bootstrap/assets/img/drivers/<?php echo $drivers_array[$i]->get_driver_id(); ?>.png" style="height:200px;width:200px;">
                                             <h6 class="text-muted card-subtitle mb-2"><br> <?php echo $drivers_array[$i]->get_full_name(); ?> <br> $<?php echo $drivers_array[$i]->get_price(); ?></h6>
                                             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                                                <button class="btn btn-primary <?php if ($drivers_array[$i]->get_price() > $money) echo "disabled"; ?>" <?php if ($drivers_array[$i]->get_price() > $money) echo "disabled"; ?>  type="submit" style="width: 200px; background-color: rgb(255,57,57);height: 48px;" value="<?php echo $drivers_array[$i]->get_full_name();?>" name="buy" >Buy</button>
+                                                <button class="btn btn-primary <?php if ($drivers_array[$i]->get_price() > $money) echo "disabled"; ?>" <?php if ($drivers_array[$i]->get_price() > $money) echo "disabled"; ?>  type="submit" style="width: 200px; background-color: rgb(255,57,57);height: 38px;" value="<?php echo $drivers_array[$i]->get_full_name();?>" name="buy" >Buy</button>
                                             </form>
                                         </div>
                                     </div>
                                 </div>
-                            <?php }} ?>
+                            <?php } } break; } ?>
                         <?php } ?>
                     </div>
                 </div>
