@@ -71,6 +71,14 @@ for ($i = 0; $i < count($drivers); $i++)
         $driver_points = "{$row['points']}";
         array_push($race_results, array($driver_id, $position, $driver_points));
     }
+    $resource = $link->query("SELECT * FROM  drivers WHERE driver_id='$driver_id'");
+    while ($row = $resource->fetch_assoc())
+    {
+        $given_name = "{$row['given_name']}";
+        $family_name = "{$row['family_name']}";
+        $full_name = $given_name . " " . $family_name;
+        $race_results[$i][] = $full_name;
+    }
 }
 mysqli_close($link);
 ?>
@@ -122,18 +130,26 @@ mysqli_close($link);
                 <img src="../bootstrap/assets/img/races/<?php echo $circuit_id?>.png" style="width:512px;height:288px; margin:auto;">
             </div>
                 <p><br></p>
-                <?php for ($i = 0; $i < count($drivers); $i++) { ?>
-                    <div class="col-md-4">
-                        <ul class="list-group">
-                            <li class="list-group-item border-0">
-                                <span>
-                                    <img src="../bootstrap/assets/img/drivers/<?php echo $race_results[$i][0]  ?>.png" style="height:40px;width:40px;">
-                                    Position: <?php echo $race_results[$i][1] ?> Points: <?php echo $race_results[$i][2] ?>
-                                </span>
-                            </li>
-                        </ul>
-                    </div>
-                <?php } ?>
+                <table class="table">
+                    <thread>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Full name</th>
+                            <th scope="col">Position</th>
+                            <th scope="col">Points</th>
+                        </tr>
+                    </thread>
+                    <tbody>
+                    <?php for ($i = 0; $i < count($drivers); $i++) { ?>
+                        <tr>
+                            <th scope="row"><img src="../bootstrap/assets/img/drivers/<?php echo $race_results[$i][0]  ?>.png" style="height:40px;width:40px;"></th>
+                            <td><?php echo $race_results[$i][3] ?></td>
+                            <td><?php echo $race_results[$i][1] ?></td>
+                            <td><?php echo $race_results[$i][2] ?></td>
+                        </tr>
+                    <?php } ?>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
