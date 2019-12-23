@@ -1,5 +1,4 @@
 <?php
-
 require_once("mysql_tables.php");
 require_once("season.php");
 require_once("dbh.php");
@@ -32,6 +31,7 @@ $circuit_id = "";
 $race_name = "";
 $drivers = array();
 $race_results = array();
+$player_did_participate = false;
 
 $resource = $link->query("SELECT * FROM players WHERE id='$user_id'");
 while ($row = $resource->fetch_assoc())
@@ -52,7 +52,7 @@ while ($row = $resource->fetch_assoc())
 $resource = $link->query("SELECT * FROM  player_race_results WHERE (race_id='$race_id') and (id='$id')");
 while ($row = $resource->fetch_assoc())
 {
-    $driver_one = "{$row['driver_one']}";
+    if($driver_one = "{$row['driver_one']}") $player_did_participate = true;
     $driver_two = "{$row['driver_two']}";
     $driver_three = "{$row['driver_three']}";
     $driver_four = "{$row['driver_four']}";
@@ -130,15 +130,14 @@ mysqli_close($link);
                 <img src="../bootstrap/assets/img/races/<?php echo $circuit_id?>.png" style="width:512px;height:288px; margin:auto;">
             </div>
                 <p><br></p>
+                <?php if($player_did_participate) { ?>
                 <table class="table">
-                    <thread>
                         <tr>
                             <th scope="col"></th>
                             <th scope="col">Full name</th>
                             <th scope="col">Position</th>
                             <th scope="col">Points</th>
                         </tr>
-                    </thread>
                     <tbody>
                     <?php for ($i = 0; $i < count($drivers); $i++) { ?>
                         <tr>
@@ -150,6 +149,9 @@ mysqli_close($link);
                     <?php } ?>
                     </tbody>
                 </table>
+                <?php } else { ?>
+                    <h3 style="text-align:center; font-weight: bold;">You did not participate in this race</h3>
+                <?php } ?>
             </div>
         </div>
     </div>

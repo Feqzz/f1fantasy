@@ -111,7 +111,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['buy']))
     }
     header("location: welcome.php");
     exit;
-
 }
 
 $driver_to_sell = $_SESSION['driver_to_sell'];
@@ -193,9 +192,10 @@ mysqli_close($link);
     <div class="container">
         <div class="row">
             <div class="col-md-3">
-                <aside>
-                    <a href="show_race_result.php">Last race result</a>
-                </aside>
+                <ul class="nav navbar-nav">
+                    <li><a href="show_race_result.php">Last race result</a></li>
+                    <li><a href="standings.php">Standings</a></li>
+                </ul>
             </div>
             <div class="col-md-9">
                 <div class="container">
@@ -210,7 +210,7 @@ mysqli_close($link);
                                             <h6 class="text-muted card-subtitle mb-2"><br> <?php if($i < count($player->drivers)) {echo $player->drivers[$i]->get_full_name();} else {echo "Available";} ?> <br> <?php if ($i < count($player->drivers)) {echo  "$" . $player->drivers[$i]->get_price();} ?></h6>
                                             <h6 class="text-muted card-subtitle mb-2"> <?php if (($i < count($player->drivers)) && $_SESSION['driver_to_sell'] == $player->drivers[$i]) { ?>
                                                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                                                    <button class="btn btn-primary" type="submit" style="width: 200px; background-color: rgb(255,57,57);height: 38px;" value="Submit" name="sell">Sell</button>
+                                                    <button class="btn btn-danger" type="submit" style="width: 200px; background-color: rgb(255,57,57);height: 38px;" value="Submit" name="sell">Sell</button>
                                                 </form>
                                                 <?php
                                                 } else { echo "<br>" . "<br>"; }  ?></h6>
@@ -231,7 +231,7 @@ mysqli_close($link);
                                             <img src="../bootstrap/assets/img/drivers/<?php echo $drivers_array[$i]->get_driver_id(); ?>.png" style="height:200px;width:200px;">
                                             <h6 class="text-muted card-subtitle mb-2"><br> <?php echo $drivers_array[$i]->get_full_name(); ?> <br> $<?php echo $drivers_array[$i]->get_price(); ?></h6>
                                             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                                                <button class="btn btn-primary <?php if ($drivers_array[$i]->get_price() > $money) echo "disabled"; ?>" <?php if ($drivers_array[$i]->get_price() > $money) echo "disabled"; ?>  type="submit" style="width: 200px; background-color: rgb(255,57,57);height: 38px;" value="<?php echo $drivers_array[$i]->get_full_name();?>" name="buy" >Buy</button>
+                                                <button class="btn btn-danger <?php if ($drivers_array[$i]->get_price() > $money) echo "disabled"; ?>" <?php if ($drivers_array[$i]->get_price() > $money) echo "disabled"; ?>  type="submit" style="width: 200px; background-color: rgb(255,57,57);height: 38px;" value="<?php echo $drivers_array[$i]->get_full_name();?>" name="buy" >Buy</button>
                                             </form>
                                         </div>
                                     </div>

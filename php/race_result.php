@@ -4,7 +4,7 @@ require_once("driver.php");
 
 class race_result
 {
-    public function __construct($driver_id, $constructor_id, $position, $points, $fastest_lap_rank, $fastest_lap_time, $race_id)
+    public function __construct($driver_id, $constructor_id, $position, $points, $fastest_lap_rank, $fastest_lap_time, $race_id, $season)
     {
         $this->race_id = $race_id;
         $this->driver_id = $driver_id;
@@ -13,6 +13,7 @@ class race_result
         $this->points = $points;
         $this->fastest_lap_rank = $fastest_lap_rank;
         $this->fastest_lap_time = $fastest_lap_time;
+        $this->season = $season;
 
         require_once("dbh.php");
         $link = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
@@ -23,14 +24,13 @@ class race_result
 
         $query =
             "
-                INSERT IGNORE INTO race_results (race_id, driver_id, constructor_id, position, points, fastest_lap_rank, fastest_lap_time)
+                INSERT IGNORE INTO race_results (race_id, driver_id, constructor_id, position, points, fastest_lap_rank, fastest_lap_time, season)
                 VALUES ('$this->race_id', '$this->driver_id', '$this->constructor_id', '$this->position', '$this->points',
-                        '$this->fastest_lap_rank', '$this->fastest_lap_time')
+                        '$this->fastest_lap_rank', '$this->fastest_lap_time', '$this->season')
             ";
 
         mysqli_query($link, $query);
-
-        $link->close();
+        mysqli_close($link);
     }
 
     private $race_id;
@@ -40,4 +40,5 @@ class race_result
     private $points;
     private $fastest_lap_rank;
     private $fastest_lap_time;
+    private $season;
 }

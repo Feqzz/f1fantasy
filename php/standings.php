@@ -51,7 +51,7 @@ while ($row = $resource->fetch_assoc())
         $constructor_name = "{$row_0['name']}";
     }
 
-    $resource_1 = $link->query("SELECT * FROM  race_results WHERE (driver_id='$driver_id')");
+    $resource_1 = $link->query("SELECT * FROM  race_results WHERE (driver_id='$driver_id') and (season='$season')");
     while ($row_1 = $resource_1->fetch_assoc())
     {
         $position = "{$row_1['position']}";

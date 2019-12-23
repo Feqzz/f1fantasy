@@ -98,6 +98,7 @@ class season
 
         //Getting driver data from the file and checking it with the array of drivers from the database.
         $driver_already_exists = false;
+        $constructor_already_exists = false;
 
         foreach($MRData->RaceTable->Race->ResultsList->Result as $Result)
         {
@@ -152,22 +153,25 @@ class season
             {
                 if (($season == $constructor_array[$i][0]) && ($constructor_id == $constructor_array[$i][1]))
                 {
+                    $constructor_already_exists = true;
                     break;
-                }
-                else
-                {
-                    $drivers_constructor = new constructor($constructor_id, $constructor_name, $constructor_nationality, $season);
                 }
             }
 
-            $race_result = new race_result($driver_id, $constructor_id, $position, $points,
-                $fastest_lap_rank, $fastest_lap_time, $race->get_race_id());
+            if(!$constructor_already_exists)
+            {
+                $drivers_constructor = new constructor($constructor_id, $constructor_name,
+                    $constructor_nationality, $season);
+            }
 
             if(!$driver_already_exists)
             {
                 $driver = new driver($permanent_number, $points, $code, $given_name,
                     $family_name, $date_of_birth, $nationality, $driver_id, $season);
             }
+
+            $race_result = new race_result($driver_id, $constructor_id, $position, $points,
+                $fastest_lap_rank, $fastest_lap_time, $race->get_race_id(), $season);
 
             if ($fastest_lap_rank == 1)
             {
@@ -205,7 +209,7 @@ class season
         mysqli_close($link);
     }
 
-    private function change_driver_price($driver_id)
+    private function change_driver_price($driver_id, $position)
     {
         require_once("dbh.php");
         $link = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
@@ -213,8 +217,15 @@ class season
         {
             die("Connection failed " . $link->connect_error);
         }
+        $resource = $link->query("SELECT * FROM drivers WHERE driver_id='$driver_id'");
+        while ($row = $resource->fetch_assoc())
+        {
+            $price = "{$row['price']}";
+        }
 
-        //Ikke sikker enda på hvordan det skal fungere.
+        //Må finne på en algoritme her som tar hensyn til at noen komboer ikke er alt for OP.
+
+
 
 
 

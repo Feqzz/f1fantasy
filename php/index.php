@@ -3,7 +3,7 @@ require_once("dbh.php");
 require_once("mysql_tables.php");
 require_once("season.php");
 
-$round = 0;
+$round = 1;
 $year = 2019;
 $number_of_races = 20;
 
@@ -22,6 +22,8 @@ $round_array = mysqli_fetch_array($get_last_round);
 
 $round = $round_array['round'] + 1;
 mysqli_close($link);
+
+if($round > $number_of_races) exit;
 
 $season->get_race_data($round);
 

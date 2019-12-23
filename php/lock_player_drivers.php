@@ -1,5 +1,4 @@
 <?php
-
 require_once("dbh.php");
 $link = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 if ($link->connect_error)
@@ -24,7 +23,8 @@ while ($row = $resource->fetch_assoc())
         $query =
             "
             INSERT INTO player_race_results (id, driver_one, driver_two, driver_three, driver_four, driver_five, redeemed)
-            VALUES ($id, '$driver_one', '$driver_two', '$driver_three', '$driver_four', '$driver_five' , false)
+            VALUES ($id, NULLIF('$driver_one',''), NULLIF('$driver_two',''), NULLIF('$driver_three',''),
+                    NULLIF('$driver_four',''), NULLIF('$driver_five','') , false)
             ON DUPLICATE KEY UPDATE
                 driver_one = VALUES(driver_one),
                 driver_two = VALUES(driver_two),

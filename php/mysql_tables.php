@@ -90,10 +90,12 @@ $race_results_table_query =
         points INT,
         fastest_lap_rank INT,
         fastest_lap_time VARCHAR(30),
+        season INT(5),
         UNIQUE KEY (race_id, driver_id),
         FOREIGN KEY (race_id) REFERENCES races(race_id),
         FOREIGN KEY (driver_id) REFERENCES drivers(driver_id),
-        FOREIGN KEY (constructor_id) REFERENCES constructors(constructor_id)                        
+        FOREIGN KEY (constructor_id) REFERENCES constructors(constructor_id),
+        FOREIGN KEY (season) REFERENCES season(year)                   
         )
     ";
 
