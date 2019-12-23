@@ -4,11 +4,11 @@ require_once("driver.php");
 
 class race_result
 {
-    public function __construct($driver, $constructor, $position, $points, $fastest_lap_rank, $fastest_lap_time, $race_id)
+    public function __construct($driver_id, $constructor_id, $position, $points, $fastest_lap_rank, $fastest_lap_time, $race_id)
     {
         $this->race_id = $race_id;
-        $this->driver_id = $driver->get_driver_id();
-        $this->constructor_id = $constructor->get_constructor_id();
+        $this->driver_id = $driver_id;
+        $this->constructor_id = $constructor_id;
         $this->position = $position;
         $this->points = $points;
         $this->fastest_lap_rank = $fastest_lap_rank;
@@ -31,20 +31,6 @@ class race_result
         mysqli_query($link, $query);
 
         $link->close();
-    }
-
-    public function print_race_result()
-    {
-        if ($this->position < 10)
-        {
-            print "0";
-        }
-        print $this->position . " | " . $this->driver->getFullName() . " | " . $this->constructor->getName() . " | " . $this->points . " | " . $this->fastest_lap_time . "<br>\n";
-    }
-
-    public function set_race_id($race_id)
-    {
-        $this->race_id = $race_id;
     }
 
     private $race_id;
