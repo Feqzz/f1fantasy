@@ -15,7 +15,7 @@ if ($link->connect_error)
     die("Connection failed " . $link->connect_error);
 }
 
-$user_id = 1;
+$user_id = $_SESSION['id'];
 $money = 0;
 $points = 0;
 $buy_slot = $_SESSION['buy_driver_slot'];
