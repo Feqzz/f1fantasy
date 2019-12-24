@@ -31,12 +31,12 @@ if($_SESSION["loggedin"])
     mysqli_stmt_fetch($stmt);
     if ($found)
     {
-        header("location: choose_drivers.php");
+        header("location: driver_display.php");
     }
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['play_button'])) {
         //Make a new player object. The constructor will send it to the database. :)
         $players = new player($user_id);
-        header("location: choose_drivers.php");
+        header("location: driver_display.php");
     }
 }
 mysqli_close($link);
