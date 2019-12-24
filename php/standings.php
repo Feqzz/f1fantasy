@@ -1,6 +1,4 @@
 <?php
-require_once("mysql_tables.php");
-require_once("season.php");
 require_once("dbh.php");
 
 session_start();

@@ -15,6 +15,7 @@ if ($link->connect_error)
 }
 
 $_SESSION['driver_to_sell'] = false;
+$_SESSION['buy_driver_slot'] = 0;
 
 if($_SESSION["loggedin"])
 {
