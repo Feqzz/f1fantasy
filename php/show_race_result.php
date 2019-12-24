@@ -26,7 +26,7 @@ $round_array = mysqli_fetch_array($get_last_round);
 $race_to_load = $round_array['round'];
 
 $user_id = $_SESSION["id"];
-$race_id = "";
+$season = 0;
 $circuit_id = "";
 $race_name = "";
 $drivers = array();
@@ -44,12 +44,12 @@ while ($row = $resource->fetch_assoc())
 $resource = $link->query("SELECT * FROM races WHERE round='$race_to_load'");
 while ($row = $resource->fetch_assoc())
 {
-    $race_id = "{$row['race_id']}";
+    $season = "{$row['season']}";
     $race_name = "{$row['race_name']}";
     $circuit_id = "{$row['circuit_id']}";
 }
 
-$resource = $link->query("SELECT * FROM  player_race_results WHERE (race_id='$race_id') and (id='$id')");
+$resource = $link->query("SELECT * FROM  player_race_results WHERE (circuit_id='$circuit_id') and (id='$id')");
 while ($row = $resource->fetch_assoc())
 {
     if($driver_one = "{$row['driver_one']}") $player_did_participate = true;
@@ -64,7 +64,7 @@ while ($row = $resource->fetch_assoc())
 for ($i = 0; $i < count($drivers); $i++)
 {
     $driver_id = $drivers[$i];
-    $resource = $link->query("SELECT * FROM  race_results WHERE (race_id='$race_id') and (driver_id='$driver_id')");
+    $resource = $link->query("SELECT * FROM  race_results WHERE (circuit_id='$circuit_id') and (driver_id='$driver_id')");
     while ($row = $resource->fetch_assoc())
     {
         $position = "{$row['position']}";

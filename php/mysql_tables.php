@@ -64,17 +64,16 @@ $drivers_table_query =
 $races_table_query =
     "
         CREATE TABLE IF NOT EXISTS races (
-        race_id VARCHAR(30) PRIMARY KEY,
+        circuit_id VARCHAR(40) PRIMARY KEY,
+        season INT(5),
         round INT,
         race_name VARCHAR(60),
-        circuit_id VARCHAR(40),
         circuit_name VARCHAR(60),
         country VARCHAR(30),
         date VARCHAR(30),
         fastest_lap_time VARCHAR(30),
         fastest_lap_driver_id VARCHAR(30),
-        season INT(5),
-        UNIQUE KEY (date, race_id),
+        UNIQUE KEY (season, circuit_id),
         FOREIGN KEY (season) REFERENCES season(year),
         FOREIGN KEY (fastest_lap_driver_id) REFERENCES drivers(driver_id)
         )
@@ -83,19 +82,20 @@ $races_table_query =
 $race_results_table_query =
     "
         CREATE TABLE IF NOT EXISTS race_results (
-        race_id VARCHAR(30),
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        circuit_id VARCHAR(40),
+        season INT(5),
         driver_id VARCHAR(30),
         constructor_id VARCHAR(30),
         position INT,
         points INT,
         fastest_lap_rank INT,
         fastest_lap_time VARCHAR(30),
-        season INT(5),
-        UNIQUE KEY (race_id, driver_id),
-        FOREIGN KEY (race_id) REFERENCES races(race_id),
+        UNIQUE KEY (circuit_id, driver_id, season),
+        FOREIGN KEY (circuit_id) REFERENCES races(circuit_id),
+        FOREIGN KEY (season) REFERENCES season(year)  ,  
         FOREIGN KEY (driver_id) REFERENCES drivers(driver_id),
-        FOREIGN KEY (constructor_id) REFERENCES constructors(constructor_id),
-        FOREIGN KEY (season) REFERENCES season(year)                   
+        FOREIGN KEY (constructor_id) REFERENCES constructors(constructor_id)          
         )
     ";
 
@@ -126,16 +126,18 @@ $player_race_results_query =
     "
         CREATE TABLE IF NOT EXISTS player_race_results (
         id INT PRIMARY KEY,
-        race_id VARCHAR(30),
+        circuit_id VARCHAR(40),
+        season INT(5),
         driver_one VARCHAR(30),
         driver_two VARCHAR(30),
         driver_three VARCHAR(30),
         driver_four VARCHAR(30),
         driver_five VARCHAR(30),
         redeemed BOOLEAN,
-        UNIQUE KEY (id, race_id),
+        UNIQUE KEY (id, circuit_id),
         FOREIGN KEY (id) REFERENCES users(id),
-        FOREIGN KEY (race_id) REFERENCES races(race_id),
+        FOREIGN KEY (circuit_id) REFERENCES races(circuit_id),
+        FOREIGN KEY (season) REFERENCES season(year),
         FOREIGN KEY (driver_one) REFERENCES drivers(driver_id),
         FOREIGN KEY (driver_two) REFERENCES drivers(driver_id),
         FOREIGN KEY (driver_three) REFERENCES drivers(driver_id),
@@ -150,7 +152,8 @@ mysqli_query($link, $constructor_table_query);
 mysqli_query($link, $drivers_table_query);
 mysqli_query($link, $races_table_query);
 mysqli_query($link, $race_results_table_query);
-mysqli_query($link,$player_table_query);
+echo mysqli_error($link);
+mysqli_query($link, $player_table_query);
 mysqli_query($link, $player_race_results_query);
 
 mysqli_close($link);

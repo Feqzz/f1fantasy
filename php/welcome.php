@@ -15,9 +15,6 @@ if ($link->connect_error)
 }
 
 $_SESSION['driver_to_sell'] = false;
-$_SESSION['buy_menu'] = false;
-$_SESSION['simulate_2019_season'] = false;
-$_SESSION['show_drivers'] = true;
 
 if($_SESSION["loggedin"])
 {

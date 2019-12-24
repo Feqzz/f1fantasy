@@ -13,12 +13,12 @@ while ($row = $resource->fetch_assoc())
     $points = "{$row['points']}";
 
     $total_points = (int)$points;
-    $race_id = "";
+    $circuit_id = "";
     $drivers = array();
     $resource = $link->query("SELECT * FROM  player_race_results WHERE (id='$id') and (redeemed=false)");
     while ($row = $resource->fetch_assoc())
     {
-        $race_id = "{$row['race_id']}";
+        $circuit_id = "{$row['circuit_id']}";
         $driver_one = "{$row['driver_one']}";
         $driver_two = "{$row['driver_two']}";
         $driver_three = "{$row['driver_three']}";
@@ -29,7 +29,7 @@ while ($row = $resource->fetch_assoc())
     for ($i = 0; $i < count($drivers); $i++)
     {
         $driver_id = $drivers[$i];
-        $resource = $link->query("SELECT * FROM  race_results WHERE (race_id='$race_id') and (driver_id='$driver_id')");
+        $resource = $link->query("SELECT * FROM  race_results WHERE (circuit_id='$circuit_id') and (driver_id='$driver_id')");
         while ($row = $resource->fetch_assoc())
         {
             $position = "{$row['position']}";
