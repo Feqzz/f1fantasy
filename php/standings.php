@@ -118,7 +118,7 @@ mysqli_close($link);
         <div class="row">
             <div class="col-md-3">
                 <ul class="nav navbar-nav">
-                    <li><a href="choose_drivers.php"><i class="fa fa-dashboard"></i>Choose drivers</a></li>
+                    <li><a href="driver_display.php"><i class="fa fa-dashboard"></i>Driver display</a></li>
                     <li><a href="show_race_result.php">Last race result</a></li>
                 </ul>
             </div>

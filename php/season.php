@@ -170,8 +170,10 @@ class season
                     $family_name, $date_of_birth, $nationality, $driver_id, $season);
             }
 
+            $race_id = $race->get_race_id();
+
             $race_result = new race_result($driver_id, $constructor_id, $position, $points,
-                $fastest_lap_rank, $fastest_lap_time, $race->get_race_id(), $season);
+                $fastest_lap_rank, $fastest_lap_time, $race_id, $season);
 
             if ($fastest_lap_rank == 1)
             {

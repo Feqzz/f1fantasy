@@ -120,9 +120,10 @@ mysqli_close($link);
     <div class="container">
         <div class="row">
             <div class="col-md-3">
-                <aside>
-                    <a href="choose_drivers.php">Choose drivers</a>
-                </aside>
+                <ul class="nav navbar-nav">
+                    <li><a href="driver_display.php"><i class="fa fa-dashboard"></i>Driver display</a></li>
+                    <li><a href="standings.php">Standings</a></li>
+                </ul>
             </div>
             <div class="col-md-9">
                 <h3 style="text-align:center; font-weight: bold;"><?php echo $race_name ?></h3>
