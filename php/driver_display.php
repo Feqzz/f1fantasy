@@ -201,6 +201,7 @@ if (isset($_POST['sell']))
                         <a href="driver_display.php" class="list-group-item list-group-item-action ">Driver display</a>
                         <a href="show_race_result.php" class="list-group-item list-group-item-action ">Last race result</a>
                         <a href="standings.php" class="list-group-item list-group-item-action ">Standings</a>
+                        <a href="leaderboard.php" class="list-group-item list-group-item-action ">Leaderboard</a>
                     </div>
                 </div>
             </div>
