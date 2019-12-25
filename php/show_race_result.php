@@ -81,8 +81,8 @@ for ($i = 0; $i < count($drivers); $i++)
     }
 }
 array_multisort(array_map(function($element) {
-    return $element[0];
-}, $drivers), SORT_DESC, $race_results);
+    return $element[2];
+}, $race_results), SORT_DESC, $race_results);
 mysqli_close($link);
 ?>
 
