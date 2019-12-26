@@ -16,12 +16,19 @@ $user_id = $_SESSION["id"];
 $player_points = $player_money = 0;
 $players = array();
 
+$resource = $link->query("SELECT * FROM players WHERE id='$user_id'");
+while ($row = $resource->fetch_assoc())
+{
+    $player_money = "{$row['money']}";
+    $player_points = "{$row['points']}";
+}
+
 $resource = $link->query("SELECT * FROM players");
 while ($row = $resource->fetch_assoc())
 {
     $id = "{$row['id']}";
-    $player_money = "{$row['money']}";
-    $player_points = "{$row['points']}";
+    $money = "{$row['money']}";
+    $points = "{$row['points']}";
 
     $resource_0 = $link->query("SELECT * FROM users WHERE id='$id'");
     while ($row_0 = $resource_0->fetch_assoc())
@@ -29,7 +36,7 @@ while ($row = $resource->fetch_assoc())
         $player_username = "{$row_0['username']}";
     }
     if($player_points != 0)
-        array_push($players, array($id, $player_username, $player_points));
+        array_push($players, array($id, $player_username, $points));
 }
 
 array_multisort(array_map(function($element) {
