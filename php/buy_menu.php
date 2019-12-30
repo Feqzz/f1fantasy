@@ -184,9 +184,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['buy']))
             <div class="bg-light border-0" id="sidebar-wrapper">
                 <div class="list-group list-group-flush">
                     <a href="driver_display.php" class="list-group-item list-group-item-action ">Driver display</a>
-                    <a href="show_race_result.php" class="list-group-item list-group-item-action ">Last race result</a>
+                    <a href="last_race_result.php" class="list-group-item list-group-item-action ">Last race result</a>
                     <a href="standings.php" class="list-group-item list-group-item-action ">Standings</a>
                     <a href="leaderboard.php" class="list-group-item list-group-item-action ">Leaderboard</a>
+                    <a href="upcoming_races.php" class="list-group-item list-group-item-action ">Upcoming races</a>
                 </div>
             </div>
         </div>
