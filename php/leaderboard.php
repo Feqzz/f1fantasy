@@ -35,7 +35,7 @@ while ($row = $resource->fetch_assoc())
     {
         $player_username = "{$row_0['username']}";
     }
-    if($player_points != 0)
+    if($points != 0)
         array_push($players, array($id, $player_username, $points));
 }
 
