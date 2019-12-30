@@ -18,6 +18,7 @@ bootstrap/
 f1fantasy.sln
 output.txt
 output.xml
+current_schedule.xml
 dbh.php
 
 # User-specific files (MonoDevelop/Xamarin Studio)
