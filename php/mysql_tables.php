@@ -99,8 +99,6 @@ $race_results_table_query =
         )
     ";
 
-
-
 $player_table_query =
     "
         CREATE TABLE IF NOT EXISTS players (
@@ -146,14 +144,30 @@ $player_race_results_query =
         )
     ";
 
+$race_schedule_query =
+    "
+        CREATE TABLE IF NOT EXISTS race_schedule (
+        season INT(5),
+        round INT,
+        circuit_id VARCHAR(40),
+        circuit_name VARCHAR(60),
+        country VARCHAR(30),
+        date VARCHAR(30),
+        time VARCHAR(30),
+        is_done BOOLEAN,
+        UNIQUE KEY (season, round),
+        FOREIGN KEY (season) REFERENCES season(year)
+        )
+    ";
+
 mysqli_query($link, $user_table_query);
 mysqli_query($link, $season_table_query);
 mysqli_query($link, $constructor_table_query);
 mysqli_query($link, $drivers_table_query);
 mysqli_query($link, $races_table_query);
 mysqli_query($link, $race_results_table_query);
-echo mysqli_error($link);
 mysqli_query($link, $player_table_query);
 mysqli_query($link, $player_race_results_query);
+mysqli_query($link, $race_schedule_query);
 
 mysqli_close($link);
