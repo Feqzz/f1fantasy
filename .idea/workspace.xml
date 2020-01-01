@@ -2,101 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f0da260d-c145-425c-a092-0baf13342b1a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/984f4903-b2b4-42ba-95dd-ebbaac9839ef.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/984f4903-b2b4-42ba-95dd-ebbaac9839ef/storage_v2/_src_/schema/information_schema.FNRwLQ.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/f1-fantasy.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/current_schedule.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/first_time_setup.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/load_next_race.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/output.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buy_menu.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/css/Features-Clean.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/css/Login-Form-Dark.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/css/Navigation-Clean.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/css/bootstrap.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/css/styles.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/driver_display.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fonts/FontAwesome.otf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fonts/font-awesome.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fonts/fontawesome-webfont.eot" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fonts/fontawesome-webfont.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fonts/fontawesome-webfont.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fonts/fontawesome-webfont.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fonts/fontawesome-webfont.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fonts/ionicons.eot" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fonts/ionicons.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fonts/ionicons.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fonts/ionicons.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fonts/ionicons.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/drivers/albon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/drivers/bottas.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/drivers/empty.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/drivers/gasly.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/drivers/giovinazzi.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/drivers/grosjean.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/drivers/hamilton.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/drivers/hulkenberg.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/drivers/kevin_magnussen.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/drivers/kubica.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/drivers/kvyat.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/drivers/leclerc.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/drivers/max_verstappen.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/drivers/norris.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/drivers/perez.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/drivers/raikkonen.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/drivers/ricciardo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/drivers/russell.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/drivers/sainz.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/drivers/stroll.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/drivers/vettel.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/f1_logo.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/races/BAK.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/races/albert_park.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/races/americas.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/races/bahrain.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/races/catalunya.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/races/hockenheimring.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/races/hungaroring.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/races/interlagos.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/races/marina_bay.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/races/monaco.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/races/monza.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/races/red_bull_ring.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/races/ricard.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/races/rodriguez.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/races/shanghai.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/races/silverstone.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/races/sochi.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/races/spa.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/races/suzuka.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/races/villeneuve.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/races/yas_marina.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/bootstrap.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/jquery.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/last_race_result.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/leaderboard.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/login.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logout.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/register.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/classes/constructor.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/classes/driver.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/classes/player.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/classes/race.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/classes/race_result.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/classes/season.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dbh.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lock_player_drivers.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/mysql_tables.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/parse_schedule.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/update_player_points.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/standings.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/upcoming_races.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/welcome.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -152,6 +59,7 @@
   <component name="PropertiesComponent">
     <property name="DatabaseDriversLRU" value="mysql" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/images" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
@@ -210,12 +118,24 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1577900714822</updated>
-      <workItem from="1577900716049" duration="6996000" />
+      <workItem from="1577900716049" duration="7146000" />
     </task>
+    <task id="LOCAL-00001" summary="Fixed the directory for all the files.">
+      <created>1577907786269</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1577907786269</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Fixed the directory for all the files." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed the directory for all the files." />
   </component>
   <component name="WindowStateProjectService">
     <state x="429" y="52" key="#PHP" timestamp="1577901790781">
@@ -230,6 +150,10 @@
       <screen x="0" y="0" width="1440" height="920" />
     </state>
     <state x="479" y="333" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.1440.920@0.0.1440.920" timestamp="1577903338029" />
+    <state x="291" y="56" key="CommitChangelistDialog2" timestamp="1577907930256">
+      <screen x="0" y="0" width="1440" height="920" />
+    </state>
+    <state x="291" y="56" key="CommitChangelistDialog2/0.0.1440.920@0.0.1440.920" timestamp="1577907930256" />
     <state x="501" y="217" key="FileChooserDialogImpl" timestamp="1577902069578">
       <screen x="0" y="0" width="1440" height="920" />
     </state>
