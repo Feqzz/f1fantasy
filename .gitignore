@@ -1,2 +1,4 @@
 src/dbh.php
+bin/current_schedule.xml
+bin/output.xml
 .idea
