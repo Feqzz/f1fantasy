@@ -54,7 +54,7 @@ class season
         $resource = $link->query("SELECT * FROM races");
         while ($row = $resource->fetch_assoc())
         {
-            $circuit_id_db = "{$row['race_id']}";
+            $circuit_id_db = "{$row['circuit_id']}";
             $season_db = "{$row['season']}";
             array_push($races_array, array($season_db, $circuit_id_db));
         }
@@ -76,7 +76,6 @@ class season
 
         $race = new race($season,$round,$race_name,$circuit_id, $circuit_name, $country, $date);
 
-
         //Getting data from database. Using it for checking duplicate drivers and constructors.
         $drivers_array = array();
         $constructor_array = array();
@@ -95,6 +94,7 @@ class season
             $season_db = "{$row['season']}";
             array_push($constructor_array, array($season_db, $constructor_id_db));
         }
+        mysqli_close($link);
 
         //Getting driver data from the file and checking it with the array of drivers from the database.
         $driver_already_exists = false;
@@ -115,6 +115,11 @@ class season
                     }
                     else
                     {
+                        $link = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+                        if ($link->connect_error)
+                        {
+                            die("Connection failed " . $link->connect_error);
+                        }
                         $query =
                             "
                                 UPDATE drivers
@@ -124,6 +129,7 @@ class season
                                     driver_id = '$driver_id'
                             ";
                         mysqli_query($link, $query);
+                        mysqli_close($link);
                     }
                 }
             }
@@ -170,21 +176,18 @@ class season
                     $family_name, $date_of_birth, $nationality, $driver_id, $season);
             }
 
-            $race_id = $race->get_race_id();
-
-            $race_result = new race_result($driver_id, $constructor_id, $position, $points,
-                $fastest_lap_rank, $fastest_lap_time, $race_id, $season);
+            $race_result = new race_result($circuit_id, $season, $driver_id, $constructor_id, $position, $points,
+                $fastest_lap_rank, $fastest_lap_time);
 
             if ($fastest_lap_rank == 1)
             {
                 $race->setFastestLapTime($fastest_lap_time, $driver_id);
             }
         }
-        mysqli_close($link);
-        $this->update_player_results($race);
+        $this->update_player_results($circuit_id, $season);
     }
 
-    private function update_player_results($race)
+    private function update_player_results($circuit_id, $season)
     {
         require_once("dbh.php");
         $link = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
@@ -192,7 +195,6 @@ class season
         {
             die("Connection failed " . $link->connect_error);
         }
-        $race_id = $race->get_race_id();
 
         $resource = $link->query("SELECT * FROM player_race_results");
         while ($row = $resource->fetch_assoc())
@@ -202,7 +204,8 @@ class season
                 "
                 UPDATE player_race_results
                 SET 
-                    race_id = '$race_id'
+                    circuit_id = '$circuit_id',
+                    season = '$season'
                 WHERE
                     id = '$id'
             ";
@@ -226,12 +229,6 @@ class season
         }
 
         //Må finne på en algoritme her som tar hensyn til at noen komboer ikke er alt for OP.
-
-
-
-
-
-
         mysqli_close($link);
     }
 

@@ -13,30 +13,31 @@ while ($row = $resource->fetch_assoc())
     $points = "{$row['points']}";
 
     $total_points = (int)$points;
-    $race_id = "";
+    $circuit_id = "";
     $drivers = array();
-    $resource = $link->query("SELECT * FROM  player_race_results WHERE (id='$id') and (redeemed=false)");
-    while ($row = $resource->fetch_assoc())
+    $resource_0 = $link->query("SELECT * FROM  player_race_results WHERE (id='$id') and (redeemed=0)");
+    while ($row_0 = $resource_0->fetch_assoc())
     {
-        $race_id = "{$row['race_id']}";
-        $driver_one = "{$row['driver_one']}";
-        $driver_two = "{$row['driver_two']}";
-        $driver_three = "{$row['driver_three']}";
-        $driver_four = "{$row['driver_four']}";
-        $driver_five = "{$row['driver_five']}";
+        $circuit_id = "{$row_0['circuit_id']}";
+        $driver_one = "{$row_0['driver_one']}";
+        $driver_two = "{$row_0['driver_two']}";
+        $driver_three = "{$row_0['driver_three']}";
+        $driver_four = "{$row_0['driver_four']}";
+        $driver_five = "{$row_0['driver_five']}";
         array_push($drivers, $driver_one, $driver_two, $driver_three, $driver_four, $driver_five);
     }
     for ($i = 0; $i < count($drivers); $i++)
     {
         $driver_id = $drivers[$i];
-        $resource = $link->query("SELECT * FROM  race_results WHERE (race_id='$race_id') and (driver_id='$driver_id')");
-        while ($row = $resource->fetch_assoc())
+        $resource_1 = $link->query("SELECT * FROM  race_results WHERE (circuit_id='$circuit_id') and (driver_id='$driver_id')");
+        while ($row_1 = $resource_1->fetch_assoc())
         {
-            $position = "{$row['position']}";
-            $driver_points = "{$row['points']}";
-            $total_points += (20 - $position) + (int)$driver_points;
+            $position = "{$row_1['position']}";
+            $driver_points = "{$row_1['points']}";
+            $total_points = $total_points + (20 - $position) + (int)$driver_points;
         }
     }
+
     $update_player_points_query =
         "
             UPDATE players
@@ -54,6 +55,7 @@ while ($row = $resource->fetch_assoc())
                 id = '$id'
         ";
     mysqli_query($link, $update_player_points_query);
+    echo mysqli_error($link);
     mysqli_query($link, $mark_as_redeemed_query);
 }
 mysqli_close($link);

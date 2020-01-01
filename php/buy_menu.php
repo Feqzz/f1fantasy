@@ -15,7 +15,7 @@ if ($link->connect_error)
     die("Connection failed " . $link->connect_error);
 }
 
-$user_id = 1;
+$user_id = $_SESSION['id'];
 $money = 0;
 $points = 0;
 $buy_slot = $_SESSION['buy_driver_slot'];
@@ -181,11 +181,16 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['buy']))
     <div class="container">
         <div class="row">
             <div class="col-md-3">
-                <ul class="nav navbar-nav">
-                    <li><a href="show_race_result.php">Last race result</a></li>
-                    <li><a href="standings.php">Standings</a></li>
-                </ul>
+            <div class="bg-light border-0" id="sidebar-wrapper">
+                <div class="list-group list-group-flush">
+                    <a href="driver_display.php" class="list-group-item list-group-item-action ">Driver display</a>
+                    <a href="last_race_result.php" class="list-group-item list-group-item-action ">Last race result</a>
+                    <a href="standings.php" class="list-group-item list-group-item-action ">Standings</a>
+                    <a href="leaderboard.php" class="list-group-item list-group-item-action ">Leaderboard</a>
+                    <a href="upcoming_races.php" class="list-group-item list-group-item-action ">Upcoming races</a>
+                </div>
             </div>
+        </div>
             <div class="col-md-9">
                 <div class="container">
                     <div class="row">

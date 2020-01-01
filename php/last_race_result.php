@@ -1,6 +1,4 @@
 <?php
-require_once("mysql_tables.php");
-require_once("season.php");
 require_once("dbh.php");
 
 session_start();
@@ -26,7 +24,7 @@ $round_array = mysqli_fetch_array($get_last_round);
 $race_to_load = $round_array['round'];
 
 $user_id = $_SESSION["id"];
-$race_id = "";
+$season = 0;
 $circuit_id = "";
 $race_name = "";
 $drivers = array();
@@ -44,12 +42,12 @@ while ($row = $resource->fetch_assoc())
 $resource = $link->query("SELECT * FROM races WHERE round='$race_to_load'");
 while ($row = $resource->fetch_assoc())
 {
-    $race_id = "{$row['race_id']}";
+    $season = "{$row['season']}";
     $race_name = "{$row['race_name']}";
     $circuit_id = "{$row['circuit_id']}";
 }
 
-$resource = $link->query("SELECT * FROM  player_race_results WHERE (race_id='$race_id') and (id='$id')");
+$resource = $link->query("SELECT * FROM  player_race_results WHERE (circuit_id='$circuit_id') and (id='$id')");
 while ($row = $resource->fetch_assoc())
 {
     if($driver_one = "{$row['driver_one']}") $player_did_participate = true;
@@ -64,7 +62,7 @@ while ($row = $resource->fetch_assoc())
 for ($i = 0; $i < count($drivers); $i++)
 {
     $driver_id = $drivers[$i];
-    $resource = $link->query("SELECT * FROM  race_results WHERE (race_id='$race_id') and (driver_id='$driver_id')");
+    $resource = $link->query("SELECT * FROM  race_results WHERE (circuit_id='$circuit_id') and (driver_id='$driver_id')");
     while ($row = $resource->fetch_assoc())
     {
         $position = "{$row['position']}";
@@ -79,6 +77,13 @@ for ($i = 0; $i < count($drivers); $i++)
         $full_name = $given_name . " " . $family_name;
         $race_results[$i][] = $full_name;
     }
+}
+
+if($player_did_participate)
+{
+    array_multisort(array_map(function ($element) {
+        return $element[2];
+    }, $race_results), SORT_DESC, $race_results);
 }
 mysqli_close($link);
 ?>
@@ -120,16 +125,21 @@ mysqli_close($link);
     <div class="container">
         <div class="row">
             <div class="col-md-3">
-                <ul class="nav navbar-nav">
-                    <li><a href="driver_display.php"><i class="fa fa-dashboard"></i>Driver display</a></li>
-                    <li><a href="standings.php">Standings</a></li>
-                </ul>
+                <div class="bg-light border-0" id="sidebar-wrapper">
+                    <div class="list-group list-group-flush">
+                        <a href="driver_display.php" class="list-group-item list-group-item-action ">Driver display</a>
+                        <a href="last_race_result.php" class="list-group-item list-group-item-action ">Last race result</a>
+                        <a href="standings.php" class="list-group-item list-group-item-action ">Standings</a>
+                        <a href="leaderboard.php" class="list-group-item list-group-item-action ">Leaderboard</a>
+                        <a href="upcoming_races.php" class="list-group-item list-group-item-action ">Upcoming races</a>
+                    </div>
+                </div>
             </div>
             <div class="col-md-9">
                 <h3 style="text-align:center; font-weight: bold;"><?php echo $race_name ?></h3>
                 <div style="text-align:center; vertical-align:middle;">
-                <img src="../bootstrap/assets/img/races/<?php echo $circuit_id?>.png" style="width:512px;height:288px; margin:auto;">
-            </div>
+                    <img src="../bootstrap/assets/img/races/<?php echo $circuit_id?>.png" style="width:512px;height:288px; margin:auto;">
+                </div>
                 <p><br></p>
                 <?php if($player_did_participate) { ?>
                 <table class="table">

@@ -13,7 +13,6 @@ class race
         $this->circuit_name = $circuitName;
         $this->country = $country;
         $this->date = $date;
-        $this->race_id = $season . "_" . $circuitId;
 
         require_once("dbh.php");
 
@@ -25,15 +24,15 @@ class race
 
         $query =
             "
-                INSERT IGNORE INTO races (race_id, round, race_name, circuit_id,
-                                          circuit_name, country, date, season)
-                VALUES ('$this->race_id', '$this->round','$this->race_name',
-                        '$this->circuit_id', '$this->circuit_name',
-                        '$this->country', '$this->date', '$this->season')
+                INSERT IGNORE INTO races (circuit_id, season, round, race_name,
+                                          circuit_name, country, date)
+                VALUES ('$this->circuit_id', '$this->season','$this->round',
+                        '$this->race_name', '$this->circuit_name',
+                        '$this->country', '$this->date')
             ";
 
         mysqli_query($link, $query);
-        $link->close();
+        mysqli_close($link);
     }
 
     public function addDriver($driver)
@@ -66,7 +65,8 @@ class race
                     fastest_lap_driver_id = '$driver_id',
                     fastest_lap_time = '$lap_time'
                 WHERE
-                    race_id = '$this->race_id';
+                    (circuit_id = '$this->circuit_id') and
+                    (season = '$this->season')
             ";
 
         mysqli_query($link, $query);
