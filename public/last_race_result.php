@@ -95,9 +95,9 @@ mysqli_close($link);
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Race results</title>
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/Navigation-Clean.css">
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/Navigation-Clean.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
@@ -138,7 +138,7 @@ mysqli_close($link);
             <div class="col-md-9">
                 <h3 style="text-align:center; font-weight: bold;"><?php echo $race_name ?></h3>
                 <div style="text-align:center; vertical-align:middle;">
-                    <img src="../images/races/<?php echo $circuit_id?>.png" style="width:512px;height:288px; margin:auto;">
+                    <img src="images/races/<?php echo $circuit_id?>.png" style="width:512px;height:288px; margin:auto;">
                 </div>
                 <p><br></p>
                 <?php if($player_did_participate) { ?>
@@ -152,7 +152,7 @@ mysqli_close($link);
                     <tbody>
                     <?php for ($i = 0; $i < count($drivers); $i++) { ?>
                         <tr>
-                            <th scope="row"><img src="../images/drivers/<?php echo $race_results[$i][0]  ?>.png" style="height:40px;width:40px;"></th>
+                            <th scope="row"><img src="images/drivers/<?php echo $race_results[$i][0]  ?>.png" style="height:40px;width:40px;"></th>
                             <td><?php echo $race_results[$i][3] ?></td>
                             <td><?php echo $race_results[$i][1] ?></td>
                             <td><?php echo $race_results[$i][2] ?></td>
@@ -167,7 +167,7 @@ mysqli_close($link);
         </div>
     </div>
 </div>
-<script src="../js/jquery.min.js"></script>
-<script src="../js/bootstrap.min.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 </body>
 </html>

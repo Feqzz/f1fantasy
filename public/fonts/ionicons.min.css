@@ -12,8 +12,8 @@
 */
 @font-face {
     font-family: "Ionicons";
-    src: url("../fonts/ionicons.eot");
-    src: url("../fonts/ionicons.eot#iefix") format("embedded-opentype"), url("../fonts/ionicons.ttf") format("truetype"), url("../fonts/ionicons.woff") format("woff"), url("../fonts/ionicons.svg#Ionicons") format("svg");
+    src: url(".eot");
+    src: url(".eot#iefix") format("embedded-opentype"), url(".ttf") format("truetype"), url(".woff") format("woff"), url(".svg#Ionicons") format("svg");
     font-weight: normal;
     font-style: normal
 }

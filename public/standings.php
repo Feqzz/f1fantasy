@@ -86,9 +86,9 @@ mysqli_close($link);
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Race results</title>
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/Navigation-Clean.css">
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/Navigation-Clean.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 <div>
@@ -144,7 +144,7 @@ mysqli_close($link);
                         <?php for ($i = 0; $i < count($drivers); $i++) { ?>
                             <tr>
                                 <th scope="row"><?php echo $i + 1; ?> </th>
-                                <td><img src="../images/drivers/<?php echo $drivers[$i][0]  ?>.png" style="height:40px;width:40px;"></td>
+                                <td><img src="images/drivers/<?php echo $drivers[$i][0]  ?>.png" style="height:40px;width:40px;"></td>
                                 <?php for ($j = 1; $j < 8; $j++ ) { ?>
                                 <td><?php echo $drivers[$i][$j] ?></td>
                                 <?php } ?>
@@ -156,7 +156,7 @@ mysqli_close($link);
         </div>
     </div>
 </div>
-<script src="../js/jquery.min.js"></script>
-<script src="../js/bootstrap.min.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 </body>
 </html>

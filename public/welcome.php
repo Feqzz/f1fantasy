@@ -46,10 +46,10 @@ mysqli_close($link);
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Welcome</title>
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../fonts/font-awesome.min.css">
-    <link rel="stylesheet" href="../css/Features-Clean.css">
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="css/Features-Clean.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 <div class="features-clean">
@@ -82,7 +82,7 @@ mysqli_close($link);
         </div>
     </div>
 </div>
-<script src="../js/jquery.min.js"></script>
-<script src="../js/bootstrap.min.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 </body>
 </html>

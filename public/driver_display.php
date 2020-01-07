@@ -165,9 +165,9 @@ if (isset($_POST['sell']))
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>F1 Fantasy</title>
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/Navigation-Clean.css">
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/Navigation-Clean.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
@@ -213,7 +213,7 @@ if (isset($_POST['sell']))
                                 <a href="?active_slot_<?php echo $i; ?>" style="text-decoration: none">
                                     <div class="card border-0">
                                         <div class="card-body">
-                                            <img src="../images/drivers/<?php if(!empty($player_drivers[$i][0])) {echo $player_drivers[$i][0];} else {echo "empty";}?>.png" style="height:200px;width:200px;">
+                                            <img src="images/drivers/<?php if(!empty($player_drivers[$i][0])) {echo $player_drivers[$i][0];} else {echo "empty";}?>.png" style="height:200px;width:200px;">
                                             <h6 class="text-muted card-subtitle mb-2"><br> <?php if(!empty($player_drivers[$i][0])) {echo $player_drivers[$i][2];} else {echo "Available";} ?> <br> <?php if (!empty($player_drivers[$i][0])) {echo  "$" . $player_drivers[$i][1];} ?></h6>
                                             <h6 class="text-muted card-subtitle mb-2"> <?php if ((!empty($player_drivers[$i][0])) && $_SESSION['driver_to_sell'][0] == $player_drivers[$i][0]) { ?>
                                                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
@@ -232,8 +232,8 @@ if (isset($_POST['sell']))
         </div>
     </div>
 </div>
-<script src="../js/jquery.min.js"></script>
-<script src="../js/bootstrap.min.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 </body>
 </html>
 

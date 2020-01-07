@@ -89,9 +89,9 @@ while($row_0 = $resource_0->fetch_assoc())
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Race results</title>
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/Navigation-Clean.css">
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/Navigation-Clean.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 <div>
@@ -131,7 +131,7 @@ while($row_0 = $resource_0->fetch_assoc())
             <div class="col-md-9">
                 <h3 style="text-align:center; font-weight: bold;">Upcoming races</h3>
                 <div style="text-align:center; vertical-align:middle;">
-                    <img src="../images/races/<?php echo $races[0][1]?>.png" style="width:512px;height:288px; margin:auto;">
+                    <img src="images/races/<?php echo $races[0][1]?>.png" style="width:512px;height:288px; margin:auto;">
                     <h3><?php echo $races[0][2]?></h3>
                 </div>
                 <p><br></p>
@@ -159,7 +159,7 @@ while($row_0 = $resource_0->fetch_assoc())
         </div>
     </div>
 </div>
-<script src="../js/jquery.min.js"></script>
-<script src="../js/bootstrap.min.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 </body>
 </html>

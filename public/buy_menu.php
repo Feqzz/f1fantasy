@@ -152,9 +152,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['buy']))
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>F1 Fantasy</title>
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/Navigation-Clean.css">
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/Navigation-Clean.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 <div>
@@ -198,7 +198,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['buy']))
                         <div class="col-md-4">
                             <div class="card border-0">
                                 <div class="card-body">
-                                    <img src="../images/drivers/<?php echo $drivers[$i][0]; ?>.png" style="height:200px;width:200px;">
+                                    <img src="images/drivers/<?php echo $drivers[$i][0]; ?>.png" style="height:200px;width:200px;">
                                     <h6 class="text-muted card-subtitle mb-2"><br> <?php echo $drivers[$i][2]; ?> <br> $<?php echo $drivers[$i][1]; ?></h6>
                                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                                         <button class="btn btn-danger <?php if ($drivers[$i][1] > $money) echo "disabled"; ?>" <?php if ($drivers[$i][1] > $money) echo "disabled"; ?>  type="submit" style="width: 200px; background-color: rgb(255,57,57);height: 38px;" value="<?php echo $drivers[$i][0];?>" name="buy" >Buy</button>
@@ -213,7 +213,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['buy']))
         </div>
     </div>
 </div>
-<script src="../js/jquery.min.js"></script>
-<script src="../js/bootstrap.min.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 </body>
 </html>
