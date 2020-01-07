@@ -1,6 +1,6 @@
 <?php
 // Initialize the session
-require_once("src/dbh.php");
+require_once("../src/dbh.php");
 $link = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 if ($link->connect_error)
 {
@@ -96,15 +96,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Log in</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="fonts/ionicons.min.css">
-    <link rel="stylesheet" href="css/Login-Form-Dark.css">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../fonts/ionicons.min.css">
+    <link rel="stylesheet" href="../css/Login-Form-Dark.css">
+    <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body><div class="login-dark">
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
         <h2 class="sr-only">Login Form</h2>
-        <div class="illustration"><img src="images/f1_logo.svg"></div>
+        <div class="illustration"><img src="../images/f1_logo.svg"></div>
         <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
             <input type="text" name="username" class="form-control" placeholder="Username" value="<?php echo $username; ?>">
             <span class="help-block"><?php echo $username_err; ?></span>
@@ -117,8 +117,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <p>Don't have an account? <a href="register.php">Sign up</a></p>
     </form>
 </div>
-<script src="js/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
 </body>
 </html>
 
